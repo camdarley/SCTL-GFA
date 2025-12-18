@@ -1,0 +1,12 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(PGPASSWORD=changethis psql:*)",
+      "Bash(npx tsc:*)",
+      "Bash(mdb-schema:*)",
+      "Bash(mdb-tables:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

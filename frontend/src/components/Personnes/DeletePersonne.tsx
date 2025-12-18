@@ -1,10 +1,8 @@
 import { Button, DialogTitle, Text } from "@chakra-ui/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
-import { useState } from "react"
 import { useForm } from "react-hook-form"
-import { FiTrash2 } from "react-icons/fi"
 
-import { ItemsService } from "@/client"
+import { PersonnesService, type PersonnePublic } from "@/client"
 import {
   DialogActionTrigger,
   DialogBody,
@@ -13,12 +11,16 @@ import {
   DialogFooter,
   DialogHeader,
   DialogRoot,
-  DialogTrigger,
 } from "@/components/ui/dialog"
 import useCustomToast from "@/hooks/useCustomToast"
 
-const DeleteItem = ({ id }: { id: string }) => {
-  const [isOpen, setIsOpen] = useState(false)
+interface DeletePersonneProps {
+  personne: PersonnePublic
+  isOpen: boolean
+  onClose: () => void
+}
+
+const DeletePersonne = ({ personne, isOpen, onClose }: DeletePersonneProps) => {
   const queryClient = useQueryClient()
   const { showSuccessToast, showErrorToast } = useCustomToast()
   const {
@@ -26,26 +28,22 @@ const DeleteItem = ({ id }: { id: string }) => {
     formState: { isSubmitting },
   } = useForm()
 
-  const deleteItem = async (id: string) => {
-    await ItemsService.deleteItem({ id: id })
-  }
-
   const mutation = useMutation({
-    mutationFn: deleteItem,
+    mutationFn: () => PersonnesService.deletePersonne({ personneId: personne.id }),
     onSuccess: () => {
-      showSuccessToast("The item was deleted successfully")
-      setIsOpen(false)
+      showSuccessToast("L'actionnaire a été supprimé avec succès.")
+      onClose()
     },
     onError: () => {
-      showErrorToast("An error occurred while deleting the item")
+      showErrorToast("Une erreur est survenue lors de la suppression.")
     },
     onSettled: () => {
-      queryClient.invalidateQueries()
+      queryClient.invalidateQueries({ queryKey: ["personnes"] })
     },
   })
 
   const onSubmit = async () => {
-    mutation.mutate(id)
+    mutation.mutate()
   }
 
   return (
@@ -54,25 +52,20 @@ const DeleteItem = ({ id }: { id: string }) => {
       placement="center"
       role="alertdialog"
       open={isOpen}
-      onOpenChange={({ open }) => setIsOpen(open)}
+      onOpenChange={({ open }) => !open && onClose()}
     >
-      <DialogTrigger asChild>
-        <Button variant="ghost" size="sm" colorPalette="red">
-          <FiTrash2 fontSize="16px" />
-          Delete Item
-        </Button>
-      </DialogTrigger>
-
       <DialogContent>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <DialogCloseTrigger />
           <DialogHeader>
-            <DialogTitle>Delete Item</DialogTitle>
+            <DialogTitle>Supprimer l'Actionnaire</DialogTitle>
           </DialogHeader>
           <DialogBody>
             <Text mb={4}>
-              This item will be permanently deleted. Are you sure? You will not
-              be able to undo this action.
+              Êtes-vous sûr de vouloir supprimer <strong>{personne.prenom} {personne.nom}</strong> ?
+            </Text>
+            <Text mb={4}>
+              Tous les mouvements et parts associés à cet actionnaire seront également{" "}
+              <strong>supprimés définitivement.</strong> Cette action est irréversible.
             </Text>
           </DialogBody>
 
@@ -83,7 +76,7 @@ const DeleteItem = ({ id }: { id: string }) => {
                 colorPalette="gray"
                 disabled={isSubmitting}
               >
-                Cancel
+                Annuler
               </Button>
             </DialogActionTrigger>
             <Button
@@ -92,13 +85,14 @@ const DeleteItem = ({ id }: { id: string }) => {
               type="submit"
               loading={isSubmitting}
             >
-              Delete
+              Supprimer
             </Button>
           </DialogFooter>
+          <DialogCloseTrigger />
         </form>
       </DialogContent>
     </DialogRoot>
   )
 }
 
-export default DeleteItem
+export default DeletePersonne

@@ -4,16 +4,96 @@ import type { CancelablePromise } from "./core/CancelablePromise"
 import { OpenAPI } from "./core/OpenAPI"
 import { request as __request } from "./core/request"
 import type {
-  ItemsReadItemsData,
-  ItemsReadItemsResponse,
-  ItemsCreateItemData,
-  ItemsCreateItemResponse,
-  ItemsReadItemData,
-  ItemsReadItemResponse,
-  ItemsUpdateItemData,
-  ItemsUpdateItemResponse,
-  ItemsDeleteItemData,
-  ItemsDeleteItemResponse,
+  ActesReadActesData,
+  ActesReadActesResponse,
+  ActesCreateActeData,
+  ActesCreateActeResponse,
+  ActesReadActeByCodeData,
+  ActesReadActeByCodeResponse,
+  ActesReadActeData,
+  ActesReadActeResponse,
+  ActesUpdateActeData,
+  ActesUpdateActeResponse,
+  ActesDeleteActeData,
+  ActesDeleteActeResponse,
+  AnomaliesGetPartsSansMouvementsData,
+  AnomaliesGetPartsSansMouvementsResponse,
+  AnomaliesGetMouvementsSansActesData,
+  AnomaliesGetMouvementsSansActesResponse,
+  AnomaliesGetAnomaliesSummaryData,
+  AnomaliesGetAnomaliesSummaryResponse,
+  CadastreReadCommunesData,
+  CadastreReadCommunesResponse,
+  CadastreCreateCommuneData,
+  CadastreCreateCommuneResponse,
+  CadastreReadCommuneData,
+  CadastreReadCommuneResponse,
+  CadastreUpdateCommuneData,
+  CadastreUpdateCommuneResponse,
+  CadastreDeleteCommuneData,
+  CadastreDeleteCommuneResponse,
+  CadastreReadLieuxDitsData,
+  CadastreReadLieuxDitsResponse,
+  CadastreCreateLieuDitData,
+  CadastreCreateLieuDitResponse,
+  CadastreReadLieuDitData,
+  CadastreReadLieuDitResponse,
+  CadastreUpdateLieuDitData,
+  CadastreUpdateLieuDitResponse,
+  CadastreDeleteLieuDitData,
+  CadastreDeleteLieuDitResponse,
+  CadastreReadExploitantsData,
+  CadastreReadExploitantsResponse,
+  CadastreCreateExploitantData,
+  CadastreCreateExploitantResponse,
+  CadastreReadExploitantData,
+  CadastreReadExploitantResponse,
+  CadastreUpdateExploitantData,
+  CadastreUpdateExploitantResponse,
+  CadastreDeleteExploitantData,
+  CadastreDeleteExploitantResponse,
+  CadastreReadTypesCadastreData,
+  CadastreReadTypesCadastreResponse,
+  CadastreCreateTypeCadastreData,
+  CadastreCreateTypeCadastreResponse,
+  CadastreReadTypeCadastreData,
+  CadastreReadTypeCadastreResponse,
+  CadastreUpdateTypeCadastreData,
+  CadastreUpdateTypeCadastreResponse,
+  CadastreDeleteTypeCadastreData,
+  CadastreDeleteTypeCadastreResponse,
+  CadastreReadClassesCadastreData,
+  CadastreReadClassesCadastreResponse,
+  CadastreCreateClasseCadastreData,
+  CadastreCreateClasseCadastreResponse,
+  CadastreReadClasseCadastreData,
+  CadastreReadClasseCadastreResponse,
+  CadastreUpdateClasseCadastreData,
+  CadastreUpdateClasseCadastreResponse,
+  CadastreDeleteClasseCadastreData,
+  CadastreDeleteClasseCadastreResponse,
+  CadastreReadTypesFermageData,
+  CadastreReadTypesFermageResponse,
+  CadastreCreateTypeFermageData,
+  CadastreCreateTypeFermageResponse,
+  CadastreReadTypeFermageData,
+  CadastreReadTypeFermageResponse,
+  CadastreUpdateTypeFermageData,
+  CadastreUpdateTypeFermageResponse,
+  CadastreDeleteTypeFermageData,
+  CadastreDeleteTypeFermageResponse,
+  CadastreReadValeursPointsData,
+  CadastreReadValeursPointsResponse,
+  CadastreCreateValeurPointData,
+  CadastreCreateValeurPointResponse,
+  CadastreReadValeurPointByAnneeData,
+  CadastreReadValeurPointByAnneeResponse,
+  CadastreReadValeurPointData,
+  CadastreReadValeurPointResponse,
+  CadastreUpdateValeurPointData,
+  CadastreUpdateValeurPointResponse,
+  CadastreDeleteValeurPointData,
+  CadastreDeleteValeurPointResponse,
   LoginLoginAccessTokenData,
   LoginLoginAccessTokenResponse,
   LoginTestTokenResponse,
@@ -23,6 +103,96 @@ import type {
   LoginResetPasswordResponse,
   LoginRecoverPasswordHtmlContentData,
   LoginRecoverPasswordHtmlContentResponse,
+  MouvementsReadMouvementsData,
+  MouvementsReadMouvementsResponse,
+  MouvementsCreateMouvementData,
+  MouvementsCreateMouvementResponse,
+  MouvementsReadMouvementData,
+  MouvementsReadMouvementResponse,
+  MouvementsUpdateMouvementData,
+  MouvementsUpdateMouvementResponse,
+  MouvementsDeleteMouvementData,
+  MouvementsDeleteMouvementResponse,
+  NumerosPartsReadNumerosPartsData,
+  NumerosPartsReadNumerosPartsResponse,
+  NumerosPartsCreateNumeroPartData,
+  NumerosPartsCreateNumeroPartResponse,
+  NumerosPartsReadNumeroPartByNumData,
+  NumerosPartsReadNumeroPartByNumResponse,
+  NumerosPartsReadNumeroPartData,
+  NumerosPartsReadNumeroPartResponse,
+  NumerosPartsUpdateNumeroPartData,
+  NumerosPartsUpdateNumeroPartResponse,
+  NumerosPartsDeleteNumeroPartData,
+  NumerosPartsDeleteNumeroPartResponse,
+  NumerosPartsTransferPartsData,
+  NumerosPartsTransferPartsResponse,
+  ParcellesReadParcellesData,
+  ParcellesReadParcellesResponse,
+  ParcellesCreateParcelleData,
+  ParcellesCreateParcelleResponse,
+  ParcellesReadParcellesByCommuneData,
+  ParcellesReadParcellesByCommuneResponse,
+  ParcellesReadParcellesByExploitantData,
+  ParcellesReadParcellesByExploitantResponse,
+  ParcellesGetFermagesTotauxData,
+  ParcellesGetFermagesTotauxResponse,
+  ParcellesCalculateFermageData,
+  ParcellesCalculateFermageResponse,
+  ParcellesReadParcelleData,
+  ParcellesReadParcelleResponse,
+  ParcellesUpdateParcelleData,
+  ParcellesUpdateParcelleResponse,
+  ParcellesDeleteParcelleData,
+  ParcellesDeleteParcelleResponse,
+  ParcellesReadParcelleWithDetailsData,
+  ParcellesReadParcelleWithDetailsResponse,
+  PersonnesReadPersonnesData,
+  PersonnesReadPersonnesResponse,
+  PersonnesCreatePersonneData,
+  PersonnesCreatePersonneResponse,
+  PersonnesReadPersonneData,
+  PersonnesReadPersonneResponse,
+  PersonnesUpdatePersonneData,
+  PersonnesUpdatePersonneResponse,
+  PersonnesDeletePersonneData,
+  PersonnesDeletePersonneResponse,
+  PersonnesReadPersonneWithPartsData,
+  PersonnesReadPersonneWithPartsResponse,
+  PersonnesReadMembresPersonneMoraleData,
+  PersonnesReadMembresPersonneMoraleResponse,
+  PrivateCreateUserData,
+  PrivateCreateUserResponse,
+  ReferencesReadTypesApportData,
+  ReferencesReadTypesApportResponse,
+  ReferencesCreateTypeApportData,
+  ReferencesCreateTypeApportResponse,
+  ReferencesReadTypeApportData,
+  ReferencesReadTypeApportResponse,
+  ReferencesUpdateTypeApportData,
+  ReferencesUpdateTypeApportResponse,
+  ReferencesDeleteTypeApportData,
+  ReferencesDeleteTypeApportResponse,
+  ReferencesReadTypesRemboursementData,
+  ReferencesReadTypesRemboursementResponse,
+  ReferencesCreateTypeRemboursementData,
+  ReferencesCreateTypeRemboursementResponse,
+  ReferencesReadTypeRemboursementData,
+  ReferencesReadTypeRemboursementResponse,
+  ReferencesUpdateTypeRemboursementData,
+  ReferencesUpdateTypeRemboursementResponse,
+  ReferencesDeleteTypeRemboursementData,
+  ReferencesDeleteTypeRemboursementResponse,
+  StructuresReadStructuresData,
+  StructuresReadStructuresResponse,
+  StructuresCreateStructureData,
+  StructuresCreateStructureResponse,
+  StructuresReadStructureData,
+  StructuresReadStructureResponse,
+  StructuresUpdateStructureData,
+  StructuresUpdateStructureResponse,
+  StructuresDeleteStructureData,
+  StructuresDeleteStructureResponse,
   UsersReadUsersData,
   UsersReadUsersResponse,
   UsersCreateUserData,
@@ -46,22 +216,248 @@ import type {
   UtilsHealthCheckResponse,
 } from "./types.gen"
 
-export class ItemsService {
+export class ActesService {
   /**
-   * Read Items
-   * Retrieve items.
+   * Read Actes
+   * Get all actes with optional filters and details.
    * @param data The data for the request.
    * @param data.skip
    * @param data.limit
-   * @returns ItemsPublic Successful Response
+   * @param data.idStructure
+   * @param data.provisoire
+   * @returns ActesWithDetailsPublic Successful Response
    * @throws ApiError
    */
-  public static readItems(
-    data: ItemsReadItemsData = {},
-  ): CancelablePromise<ItemsReadItemsResponse> {
+  public static readActes(
+    data: ActesReadActesData = {},
+  ): CancelablePromise<ActesReadActesResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/items/",
+      url: "/api/v1/actes/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        id_structure: data.idStructure,
+        provisoire: data.provisoire,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Acte
+   * Create a new acte.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ActePublic Successful Response
+   * @throws ApiError
+   */
+  public static createActe(
+    data: ActesCreateActeData,
+  ): CancelablePromise<ActesCreateActeResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/actes/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Acte By Code
+   * Get an acte by its code.
+   * @param data The data for the request.
+   * @param data.codeActe
+   * @returns ActePublic Successful Response
+   * @throws ApiError
+   */
+  public static readActeByCode(
+    data: ActesReadActeByCodeData,
+  ): CancelablePromise<ActesReadActeByCodeResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/actes/by-code/{code_acte}",
+      path: {
+        code_acte: data.codeActe,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Acte
+   * Get a specific acte by ID.
+   * @param data The data for the request.
+   * @param data.acteId
+   * @returns ActePublic Successful Response
+   * @throws ApiError
+   */
+  public static readActe(
+    data: ActesReadActeData,
+  ): CancelablePromise<ActesReadActeResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/actes/{acte_id}",
+      path: {
+        acte_id: data.acteId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Acte
+   * Update an existing acte.
+   * @param data The data for the request.
+   * @param data.acteId
+   * @param data.requestBody
+   * @returns ActePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateActe(
+    data: ActesUpdateActeData,
+  ): CancelablePromise<ActesUpdateActeResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/actes/{acte_id}",
+      path: {
+        acte_id: data.acteId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Acte
+   * Delete an acte.
+   * @param data The data for the request.
+   * @param data.acteId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteActe(
+    data: ActesDeleteActeData,
+  ): CancelablePromise<ActesDeleteActeResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/actes/{acte_id}",
+      path: {
+        acte_id: data.acteId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class AnomaliesService {
+  /**
+   * Get Parts Sans Mouvements
+   * Find share numbers (numeros de parts) that have no associated movements.
+   *
+   * This indicates data that may need correction - every part should have
+   * at least one movement recording its creation/acquisition.
+   * @param data The data for the request.
+   * @param data.idStructure
+   * @returns NumeroPartPublic Successful Response
+   * @throws ApiError
+   */
+  public static getPartsSansMouvements(
+    data: AnomaliesGetPartsSansMouvementsData = {},
+  ): CancelablePromise<AnomaliesGetPartsSansMouvementsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/anomalies/parts-sans-mouvements",
+      query: {
+        id_structure: data.idStructure,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Mouvements Sans Actes
+   * Find movements that have no associated legal act (acte).
+   *
+   * Every movement should be linked to an acte for proper legal tracking.
+   * @param data The data for the request.
+   * @param data.idStructure
+   * @returns MouvementPublic Successful Response
+   * @throws ApiError
+   */
+  public static getMouvementsSansActes(
+    data: AnomaliesGetMouvementsSansActesData = {},
+  ): CancelablePromise<AnomaliesGetMouvementsSansActesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/anomalies/mouvements-sans-actes",
+      query: {
+        id_structure: data.idStructure,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Anomalies Summary
+   * Get a summary of all detected anomalies.
+   *
+   * Returns counts of each anomaly type for quick assessment of data quality.
+   * @param data The data for the request.
+   * @param data.idStructure
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static getAnomaliesSummary(
+    data: AnomaliesGetAnomaliesSummaryData = {},
+  ): CancelablePromise<AnomaliesGetAnomaliesSummaryResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/anomalies/summary",
+      query: {
+        id_structure: data.idStructure,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class CadastreService {
+  /**
+   * Read Communes
+   * Get all communes.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns CommunesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readCommunes(
+    data: CadastreReadCommunesData = {},
+  ): CancelablePromise<CadastreReadCommunesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/communes",
       query: {
         skip: data.skip,
         limit: data.limit,
@@ -73,19 +469,19 @@ export class ItemsService {
   }
 
   /**
-   * Create Item
-   * Create new item.
+   * Create Commune
+   * Create a new commune.
    * @param data The data for the request.
    * @param data.requestBody
-   * @returns ItemPublic Successful Response
+   * @returns CommunePublic Successful Response
    * @throws ApiError
    */
-  public static createItem(
-    data: ItemsCreateItemData,
-  ): CancelablePromise<ItemsCreateItemResponse> {
+  public static createCommune(
+    data: CadastreCreateCommuneData,
+  ): CancelablePromise<CadastreCreateCommuneResponse> {
     return __request(OpenAPI, {
       method: "POST",
-      url: "/api/v1/items/",
+      url: "/api/v1/cadastre/communes",
       body: data.requestBody,
       mediaType: "application/json",
       errors: {
@@ -95,21 +491,21 @@ export class ItemsService {
   }
 
   /**
-   * Read Item
-   * Get item by ID.
+   * Read Commune
+   * Get a specific commune by ID.
    * @param data The data for the request.
-   * @param data.id
-   * @returns ItemPublic Successful Response
+   * @param data.communeId
+   * @returns CommunePublic Successful Response
    * @throws ApiError
    */
-  public static readItem(
-    data: ItemsReadItemData,
-  ): CancelablePromise<ItemsReadItemResponse> {
+  public static readCommune(
+    data: CadastreReadCommuneData,
+  ): CancelablePromise<CadastreReadCommuneResponse> {
     return __request(OpenAPI, {
       method: "GET",
-      url: "/api/v1/items/{id}",
+      url: "/api/v1/cadastre/communes/{commune_id}",
       path: {
-        id: data.id,
+        commune_id: data.communeId,
       },
       errors: {
         422: "Validation Error",
@@ -118,22 +514,22 @@ export class ItemsService {
   }
 
   /**
-   * Update Item
-   * Update an item.
+   * Update Commune
+   * Update an existing commune.
    * @param data The data for the request.
-   * @param data.id
+   * @param data.communeId
    * @param data.requestBody
-   * @returns ItemPublic Successful Response
+   * @returns CommunePublic Successful Response
    * @throws ApiError
    */
-  public static updateItem(
-    data: ItemsUpdateItemData,
-  ): CancelablePromise<ItemsUpdateItemResponse> {
+  public static updateCommune(
+    data: CadastreUpdateCommuneData,
+  ): CancelablePromise<CadastreUpdateCommuneResponse> {
     return __request(OpenAPI, {
       method: "PUT",
-      url: "/api/v1/items/{id}",
+      url: "/api/v1/cadastre/communes/{commune_id}",
       path: {
-        id: data.id,
+        commune_id: data.communeId,
       },
       body: data.requestBody,
       mediaType: "application/json",
@@ -144,21 +540,762 @@ export class ItemsService {
   }
 
   /**
-   * Delete Item
-   * Delete an item.
+   * Delete Commune
+   * Delete a commune.
    * @param data The data for the request.
-   * @param data.id
+   * @param data.communeId
    * @returns Message Successful Response
    * @throws ApiError
    */
-  public static deleteItem(
-    data: ItemsDeleteItemData,
-  ): CancelablePromise<ItemsDeleteItemResponse> {
+  public static deleteCommune(
+    data: CadastreDeleteCommuneData,
+  ): CancelablePromise<CadastreDeleteCommuneResponse> {
     return __request(OpenAPI, {
       method: "DELETE",
-      url: "/api/v1/items/{id}",
+      url: "/api/v1/cadastre/communes/{commune_id}",
       path: {
-        id: data.id,
+        commune_id: data.communeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Lieux Dits
+   * Get all lieux-dits with optional commune filter.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.idCommune
+   * @returns LieuxDitsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readLieuxDits(
+    data: CadastreReadLieuxDitsData = {},
+  ): CancelablePromise<CadastreReadLieuxDitsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/lieux-dits",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        id_commune: data.idCommune,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Lieu Dit
+   * Create a new lieu-dit.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns LieuDitPublic Successful Response
+   * @throws ApiError
+   */
+  public static createLieuDit(
+    data: CadastreCreateLieuDitData,
+  ): CancelablePromise<CadastreCreateLieuDitResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/cadastre/lieux-dits",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Lieu Dit
+   * Get a specific lieu-dit by ID.
+   * @param data The data for the request.
+   * @param data.lieuDitId
+   * @returns LieuDitPublic Successful Response
+   * @throws ApiError
+   */
+  public static readLieuDit(
+    data: CadastreReadLieuDitData,
+  ): CancelablePromise<CadastreReadLieuDitResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/lieux-dits/{lieu_dit_id}",
+      path: {
+        lieu_dit_id: data.lieuDitId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Lieu Dit
+   * Update an existing lieu-dit.
+   * @param data The data for the request.
+   * @param data.lieuDitId
+   * @param data.requestBody
+   * @returns LieuDitPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateLieuDit(
+    data: CadastreUpdateLieuDitData,
+  ): CancelablePromise<CadastreUpdateLieuDitResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/cadastre/lieux-dits/{lieu_dit_id}",
+      path: {
+        lieu_dit_id: data.lieuDitId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Lieu Dit
+   * Delete a lieu-dit.
+   * @param data The data for the request.
+   * @param data.lieuDitId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteLieuDit(
+    data: CadastreDeleteLieuDitData,
+  ): CancelablePromise<CadastreDeleteLieuDitResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/cadastre/lieux-dits/{lieu_dit_id}",
+      path: {
+        lieu_dit_id: data.lieuDitId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Exploitants
+   * Get all exploitants with optional name filter.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.nom
+   * @returns ExploitantsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readExploitants(
+    data: CadastreReadExploitantsData = {},
+  ): CancelablePromise<CadastreReadExploitantsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/exploitants",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        nom: data.nom,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Exploitant
+   * Create a new exploitant.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ExploitantPublic Successful Response
+   * @throws ApiError
+   */
+  public static createExploitant(
+    data: CadastreCreateExploitantData,
+  ): CancelablePromise<CadastreCreateExploitantResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/cadastre/exploitants",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Exploitant
+   * Get a specific exploitant by ID.
+   * @param data The data for the request.
+   * @param data.exploitantId
+   * @returns ExploitantPublic Successful Response
+   * @throws ApiError
+   */
+  public static readExploitant(
+    data: CadastreReadExploitantData,
+  ): CancelablePromise<CadastreReadExploitantResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/exploitants/{exploitant_id}",
+      path: {
+        exploitant_id: data.exploitantId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Exploitant
+   * Update an existing exploitant.
+   * @param data The data for the request.
+   * @param data.exploitantId
+   * @param data.requestBody
+   * @returns ExploitantPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateExploitant(
+    data: CadastreUpdateExploitantData,
+  ): CancelablePromise<CadastreUpdateExploitantResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/cadastre/exploitants/{exploitant_id}",
+      path: {
+        exploitant_id: data.exploitantId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Exploitant
+   * Delete an exploitant.
+   * @param data The data for the request.
+   * @param data.exploitantId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteExploitant(
+    data: CadastreDeleteExploitantData,
+  ): CancelablePromise<CadastreDeleteExploitantResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/cadastre/exploitants/{exploitant_id}",
+      path: {
+        exploitant_id: data.exploitantId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Types Cadastre
+   * Get all types cadastre.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns TypesCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypesCadastre(
+    data: CadastreReadTypesCadastreData = {},
+  ): CancelablePromise<CadastreReadTypesCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/types-cadastre",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Type Cadastre
+   * Create a new type cadastre.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns TypeCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static createTypeCadastre(
+    data: CadastreCreateTypeCadastreData,
+  ): CancelablePromise<CadastreCreateTypeCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/cadastre/types-cadastre",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Type Cadastre
+   * Get a specific type cadastre by ID.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns TypeCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypeCadastre(
+    data: CadastreReadTypeCadastreData,
+  ): CancelablePromise<CadastreReadTypeCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/types-cadastre/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Type Cadastre
+   * Update an existing type cadastre.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @param data.requestBody
+   * @returns TypeCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateTypeCadastre(
+    data: CadastreUpdateTypeCadastreData,
+  ): CancelablePromise<CadastreUpdateTypeCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/cadastre/types-cadastre/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Type Cadastre
+   * Delete a type cadastre.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteTypeCadastre(
+    data: CadastreDeleteTypeCadastreData,
+  ): CancelablePromise<CadastreDeleteTypeCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/cadastre/types-cadastre/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Classes Cadastre
+   * Get all classes cadastre.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns ClassesCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static readClassesCadastre(
+    data: CadastreReadClassesCadastreData = {},
+  ): CancelablePromise<CadastreReadClassesCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/classes-cadastre",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Classe Cadastre
+   * Create a new classe cadastre.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ClasseCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static createClasseCadastre(
+    data: CadastreCreateClasseCadastreData,
+  ): CancelablePromise<CadastreCreateClasseCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/cadastre/classes-cadastre",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Classe Cadastre
+   * Get a specific classe cadastre by ID.
+   * @param data The data for the request.
+   * @param data.classeId
+   * @returns ClasseCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static readClasseCadastre(
+    data: CadastreReadClasseCadastreData,
+  ): CancelablePromise<CadastreReadClasseCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/classes-cadastre/{classe_id}",
+      path: {
+        classe_id: data.classeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Classe Cadastre
+   * Update an existing classe cadastre.
+   * @param data The data for the request.
+   * @param data.classeId
+   * @param data.requestBody
+   * @returns ClasseCadastrePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateClasseCadastre(
+    data: CadastreUpdateClasseCadastreData,
+  ): CancelablePromise<CadastreUpdateClasseCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/cadastre/classes-cadastre/{classe_id}",
+      path: {
+        classe_id: data.classeId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Classe Cadastre
+   * Delete a classe cadastre.
+   * @param data The data for the request.
+   * @param data.classeId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteClasseCadastre(
+    data: CadastreDeleteClasseCadastreData,
+  ): CancelablePromise<CadastreDeleteClasseCadastreResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/cadastre/classes-cadastre/{classe_id}",
+      path: {
+        classe_id: data.classeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Types Fermage
+   * Get all types fermage.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns TypesFermagePublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypesFermage(
+    data: CadastreReadTypesFermageData = {},
+  ): CancelablePromise<CadastreReadTypesFermageResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/types-fermage",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Type Fermage
+   * Create a new type fermage.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns TypeFermagePublic Successful Response
+   * @throws ApiError
+   */
+  public static createTypeFermage(
+    data: CadastreCreateTypeFermageData,
+  ): CancelablePromise<CadastreCreateTypeFermageResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/cadastre/types-fermage",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Type Fermage
+   * Get a specific type fermage by ID.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns TypeFermagePublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypeFermage(
+    data: CadastreReadTypeFermageData,
+  ): CancelablePromise<CadastreReadTypeFermageResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/types-fermage/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Type Fermage
+   * Update an existing type fermage.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @param data.requestBody
+   * @returns TypeFermagePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateTypeFermage(
+    data: CadastreUpdateTypeFermageData,
+  ): CancelablePromise<CadastreUpdateTypeFermageResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/cadastre/types-fermage/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Type Fermage
+   * Delete a type fermage.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteTypeFermage(
+    data: CadastreDeleteTypeFermageData,
+  ): CancelablePromise<CadastreDeleteTypeFermageResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/cadastre/types-fermage/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Valeurs Points
+   * Get all valeurs points (sorted by year descending).
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns ValeursPointsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readValeursPoints(
+    data: CadastreReadValeursPointsData = {},
+  ): CancelablePromise<CadastreReadValeursPointsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/valeurs-points",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Valeur Point
+   * Create a new valeur point.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ValeurPointPublic Successful Response
+   * @throws ApiError
+   */
+  public static createValeurPoint(
+    data: CadastreCreateValeurPointData,
+  ): CancelablePromise<CadastreCreateValeurPointResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/cadastre/valeurs-points",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Valeur Point By Annee
+   * Get valeur point for a specific year.
+   * @param data The data for the request.
+   * @param data.annee
+   * @returns ValeurPointPublic Successful Response
+   * @throws ApiError
+   */
+  public static readValeurPointByAnnee(
+    data: CadastreReadValeurPointByAnneeData,
+  ): CancelablePromise<CadastreReadValeurPointByAnneeResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/valeurs-points/by-annee/{annee}",
+      path: {
+        annee: data.annee,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Valeur Point
+   * Get a specific valeur point by ID.
+   * @param data The data for the request.
+   * @param data.valeurId
+   * @returns ValeurPointPublic Successful Response
+   * @throws ApiError
+   */
+  public static readValeurPoint(
+    data: CadastreReadValeurPointData,
+  ): CancelablePromise<CadastreReadValeurPointResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/cadastre/valeurs-points/{valeur_id}",
+      path: {
+        valeur_id: data.valeurId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Valeur Point
+   * Update an existing valeur point.
+   * @param data The data for the request.
+   * @param data.valeurId
+   * @param data.requestBody
+   * @returns ValeurPointPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateValeurPoint(
+    data: CadastreUpdateValeurPointData,
+  ): CancelablePromise<CadastreUpdateValeurPointResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/cadastre/valeurs-points/{valeur_id}",
+      path: {
+        valeur_id: data.valeurId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Valeur Point
+   * Delete a valeur point.
+   * @param data The data for the request.
+   * @param data.valeurId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteValeurPoint(
+    data: CadastreDeleteValeurPointData,
+  ): CancelablePromise<CadastreDeleteValeurPointResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/cadastre/valeurs-points/{valeur_id}",
+      path: {
+        valeur_id: data.valeurId,
       },
       errors: {
         422: "Validation Error",
@@ -264,6 +1401,1189 @@ export class LoginService {
       url: "/api/v1/password-recovery-html-content/{email}",
       path: {
         email: data.email,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class MouvementsService {
+  /**
+   * Read Mouvements
+   * Get all mouvements with optional filters.
+   *
+   * - sens=true: acquisitions (+)
+   * - sens=false: cessions (-)
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.idPersonne
+   * @param data.idActe
+   * @param data.sens
+   * @returns MouvementsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readMouvements(
+    data: MouvementsReadMouvementsData = {},
+  ): CancelablePromise<MouvementsReadMouvementsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/mouvements/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        id_personne: data.idPersonne,
+        id_acte: data.idActe,
+        sens: data.sens,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Mouvement
+   * Create a new mouvement.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns MouvementPublic Successful Response
+   * @throws ApiError
+   */
+  public static createMouvement(
+    data: MouvementsCreateMouvementData,
+  ): CancelablePromise<MouvementsCreateMouvementResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/mouvements/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Mouvement
+   * Get a specific mouvement by ID.
+   * @param data The data for the request.
+   * @param data.mouvementId
+   * @returns MouvementPublic Successful Response
+   * @throws ApiError
+   */
+  public static readMouvement(
+    data: MouvementsReadMouvementData,
+  ): CancelablePromise<MouvementsReadMouvementResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/mouvements/{mouvement_id}",
+      path: {
+        mouvement_id: data.mouvementId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Mouvement
+   * Update an existing mouvement.
+   * @param data The data for the request.
+   * @param data.mouvementId
+   * @param data.requestBody
+   * @returns MouvementPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateMouvement(
+    data: MouvementsUpdateMouvementData,
+  ): CancelablePromise<MouvementsUpdateMouvementResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/mouvements/{mouvement_id}",
+      path: {
+        mouvement_id: data.mouvementId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Mouvement
+   * Delete a mouvement.
+   * @param data The data for the request.
+   * @param data.mouvementId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteMouvement(
+    data: MouvementsDeleteMouvementData,
+  ): CancelablePromise<MouvementsDeleteMouvementResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/mouvements/{mouvement_id}",
+      path: {
+        mouvement_id: data.mouvementId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class NumerosPartsService {
+  /**
+   * Read Numeros Parts
+   * Get all numeros parts with optional filters and details.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.idPersonne
+   * @param data.idStructure
+   * @param data.termine
+   * @param data.distribue
+   * @param data.numPartMin
+   * @param data.numPartMax
+   * @returns NumeroPartsWithDetailsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readNumerosParts(
+    data: NumerosPartsReadNumerosPartsData = {},
+  ): CancelablePromise<NumerosPartsReadNumerosPartsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/numeros-parts/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        id_personne: data.idPersonne,
+        id_structure: data.idStructure,
+        termine: data.termine,
+        distribue: data.distribue,
+        num_part_min: data.numPartMin,
+        num_part_max: data.numPartMax,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Numero Part
+   * Create a new numero part.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns NumeroPartPublic Successful Response
+   * @throws ApiError
+   */
+  public static createNumeroPart(
+    data: NumerosPartsCreateNumeroPartData,
+  ): CancelablePromise<NumerosPartsCreateNumeroPartResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/numeros-parts/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Numero Part By Num
+   * Get a numero part by its number.
+   * @param data The data for the request.
+   * @param data.numPart
+   * @param data.idStructure
+   * @returns NumeroPartPublic Successful Response
+   * @throws ApiError
+   */
+  public static readNumeroPartByNum(
+    data: NumerosPartsReadNumeroPartByNumData,
+  ): CancelablePromise<NumerosPartsReadNumeroPartByNumResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/numeros-parts/by-num/{num_part}",
+      path: {
+        num_part: data.numPart,
+      },
+      query: {
+        id_structure: data.idStructure,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Numero Part
+   * Get a specific numero part by ID.
+   * @param data The data for the request.
+   * @param data.partId
+   * @returns NumeroPartPublic Successful Response
+   * @throws ApiError
+   */
+  public static readNumeroPart(
+    data: NumerosPartsReadNumeroPartData,
+  ): CancelablePromise<NumerosPartsReadNumeroPartResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/numeros-parts/{part_id}",
+      path: {
+        part_id: data.partId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Numero Part
+   * Update an existing numero part.
+   * @param data The data for the request.
+   * @param data.partId
+   * @param data.requestBody
+   * @returns NumeroPartPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateNumeroPart(
+    data: NumerosPartsUpdateNumeroPartData,
+  ): CancelablePromise<NumerosPartsUpdateNumeroPartResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/numeros-parts/{part_id}",
+      path: {
+        part_id: data.partId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Numero Part
+   * Delete a numero part.
+   * @param data The data for the request.
+   * @param data.partId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteNumeroPart(
+    data: NumerosPartsDeleteNumeroPartData,
+  ): CancelablePromise<NumerosPartsDeleteNumeroPartResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/numeros-parts/{part_id}",
+      path: {
+        part_id: data.partId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Transfer Parts
+   * Transfer multiple parts to a new owner (cession).
+   *
+   * This is used for the cession workflow where parts change ownership.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns NumeroPartPublic Successful Response
+   * @throws ApiError
+   */
+  public static transferParts(
+    data: NumerosPartsTransferPartsData,
+  ): CancelablePromise<NumerosPartsTransferPartsResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/numeros-parts/transfer",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class ParcellesService {
+  /**
+   * Read Parcelles
+   * Get all parcelles with subdivision data.
+   *
+   * Filters allow searching by commune, lieu-dit, exploitant (via subdivisions),
+   * cadastre type, fermage type (via subdivisions), GFA, or SCTL ownership status.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.idCommune
+   * @param data.idLieuDit
+   * @param data.idExploitant
+   * @param data.idTypeCadastre
+   * @param data.idTypeFermage
+   * @param data.idGfa
+   * @param data.sctl
+   * @returns ParcellesWithSubdivisionsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readParcelles(
+    data: ParcellesReadParcellesData = {},
+  ): CancelablePromise<ParcellesReadParcellesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/parcelles/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        id_commune: data.idCommune,
+        id_lieu_dit: data.idLieuDit,
+        id_exploitant: data.idExploitant,
+        id_type_cadastre: data.idTypeCadastre,
+        id_type_fermage: data.idTypeFermage,
+        id_gfa: data.idGfa,
+        sctl: data.sctl,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Parcelle
+   * Create a new parcelle.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns ParcellePublic Successful Response
+   * @throws ApiError
+   */
+  public static createParcelle(
+    data: ParcellesCreateParcelleData,
+  ): CancelablePromise<ParcellesCreateParcelleResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/parcelles/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Parcelles By Commune
+   * Get all parcelles for a specific commune.
+   * @param data The data for the request.
+   * @param data.communeId
+   * @param data.skip
+   * @param data.limit
+   * @returns ParcellesWithSubdivisionsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readParcellesByCommune(
+    data: ParcellesReadParcellesByCommuneData,
+  ): CancelablePromise<ParcellesReadParcellesByCommuneResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/parcelles/by-commune/{commune_id}",
+      path: {
+        commune_id: data.communeId,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Parcelles By Exploitant
+   * Get all parcelles for a specific exploitant (farmer) via subdivisions.
+   * @param data The data for the request.
+   * @param data.exploitantId
+   * @param data.skip
+   * @param data.limit
+   * @returns ParcellesWithSubdivisionsPublic Successful Response
+   * @throws ApiError
+   */
+  public static readParcellesByExploitant(
+    data: ParcellesReadParcellesByExploitantData,
+  ): CancelablePromise<ParcellesReadParcellesByExploitantResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/parcelles/by-exploitant/{exploitant_id}",
+      path: {
+        exploitant_id: data.exploitantId,
+      },
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Get Fermages Totaux
+   * Calculate total fermage amounts from subdivisions.
+   *
+   * Returns totals for surface, revenu, and fermage amounts.
+   * Optionally filter by year, exploitant, commune, or SCTL ownership status.
+   * @param data The data for the request.
+   * @param data.annee
+   * @param data.idExploitant
+   * @param data.idCommune
+   * @param data.sctl
+   * @returns FermageTotaux Successful Response
+   * @throws ApiError
+   */
+  public static getFermagesTotaux(
+    data: ParcellesGetFermagesTotauxData = {},
+  ): CancelablePromise<ParcellesGetFermagesTotauxResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/parcelles/fermages/totaux",
+      query: {
+        annee: data.annee,
+        id_exploitant: data.idExploitant,
+        id_commune: data.idCommune,
+        sctl: data.sctl,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Calculate Fermage
+   * Calculate fermage amount for given parameters.
+   *
+   * Uses the formula: (points × surface) / 10000 × point_value × (1 + supplement%)
+   *
+   * Returns the calculated fermage amount.
+   * @param data The data for the request.
+   * @param data.pointFermage Point de fermage de la subdivision
+   * @param data.surface Surface en hectares
+   * @param data.sctl Si la parcelle appartient au SCTL
+   * @param data.annee Année pour les valeurs de points
+   * @returns unknown Successful Response
+   * @throws ApiError
+   */
+  public static calculateFermage(
+    data: ParcellesCalculateFermageData,
+  ): CancelablePromise<ParcellesCalculateFermageResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/parcelles/fermages/calculate",
+      query: {
+        point_fermage: data.pointFermage,
+        surface: data.surface,
+        sctl: data.sctl,
+        annee: data.annee,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Parcelle
+   * Get a specific parcelle by ID.
+   * @param data The data for the request.
+   * @param data.parcelleId
+   * @returns ParcellePublic Successful Response
+   * @throws ApiError
+   */
+  public static readParcelle(
+    data: ParcellesReadParcelleData,
+  ): CancelablePromise<ParcellesReadParcelleResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/parcelles/{parcelle_id}",
+      path: {
+        parcelle_id: data.parcelleId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Parcelle
+   * Update an existing parcelle.
+   * @param data The data for the request.
+   * @param data.parcelleId
+   * @param data.requestBody
+   * @returns ParcellePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateParcelle(
+    data: ParcellesUpdateParcelleData,
+  ): CancelablePromise<ParcellesUpdateParcelleResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/parcelles/{parcelle_id}",
+      path: {
+        parcelle_id: data.parcelleId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Parcelle
+   * Delete a parcelle.
+   * @param data The data for the request.
+   * @param data.parcelleId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteParcelle(
+    data: ParcellesDeleteParcelleData,
+  ): CancelablePromise<ParcellesDeleteParcelleResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/parcelles/{parcelle_id}",
+      path: {
+        parcelle_id: data.parcelleId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Parcelle With Details
+   * Get a parcelle with all related details and calculated fermage.
+   *
+   * Includes commune name, lieu-dit name, exploitant name, type labels,
+   * and calculated fermage amounts.
+   * @param data The data for the request.
+   * @param data.parcelleId
+   * @param data.annee
+   * @returns ParcelleWithDetails Successful Response
+   * @throws ApiError
+   */
+  public static readParcelleWithDetails(
+    data: ParcellesReadParcelleWithDetailsData,
+  ): CancelablePromise<ParcellesReadParcelleWithDetailsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/parcelles/{parcelle_id}/details",
+      path: {
+        parcelle_id: data.parcelleId,
+      },
+      query: {
+        annee: data.annee,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class PersonnesService {
+  /**
+   * Read Personnes
+   * Get all personnes with optional filters.
+   *
+   * Filters match the MultiCrit search from the original application.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.nom
+   * @param data.ville
+   * @param data.codePostal
+   * @param data.idStructure
+   * @param data.npai
+   * @param data.decede
+   * @param data.termine
+   * @param data.fondateur
+   * @param data.deDroit
+   * @param data.adherent
+   * @param data.estPersonneMorale
+   * @returns PersonnesPublic Successful Response
+   * @throws ApiError
+   */
+  public static readPersonnes(
+    data: PersonnesReadPersonnesData = {},
+  ): CancelablePromise<PersonnesReadPersonnesResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/personnes/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        nom: data.nom,
+        ville: data.ville,
+        code_postal: data.codePostal,
+        id_structure: data.idStructure,
+        npai: data.npai,
+        decede: data.decede,
+        termine: data.termine,
+        fondateur: data.fondateur,
+        de_droit: data.deDroit,
+        adherent: data.adherent,
+        est_personne_morale: data.estPersonneMorale,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Personne
+   * Create a new personne (shareholder).
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns PersonnePublic Successful Response
+   * @throws ApiError
+   */
+  public static createPersonne(
+    data: PersonnesCreatePersonneData,
+  ): CancelablePromise<PersonnesCreatePersonneResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/personnes/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Personne
+   * Get a specific personne by ID.
+   * @param data The data for the request.
+   * @param data.personneId
+   * @returns PersonnePublic Successful Response
+   * @throws ApiError
+   */
+  public static readPersonne(
+    data: PersonnesReadPersonneData,
+  ): CancelablePromise<PersonnesReadPersonneResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/personnes/{personne_id}",
+      path: {
+        personne_id: data.personneId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Personne
+   * Update an existing personne.
+   * @param data The data for the request.
+   * @param data.personneId
+   * @param data.requestBody
+   * @returns PersonnePublic Successful Response
+   * @throws ApiError
+   */
+  public static updatePersonne(
+    data: PersonnesUpdatePersonneData,
+  ): CancelablePromise<PersonnesUpdatePersonneResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/personnes/{personne_id}",
+      path: {
+        personne_id: data.personneId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Personne
+   * Delete a personne.
+   * @param data The data for the request.
+   * @param data.personneId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deletePersonne(
+    data: PersonnesDeletePersonneData,
+  ): CancelablePromise<PersonnesDeletePersonneResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/personnes/{personne_id}",
+      path: {
+        personne_id: data.personneId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Personne With Parts
+   * Get a personne with calculated share counts (GFA, SCTL, total).
+   * @param data The data for the request.
+   * @param data.personneId
+   * @returns PersonneWithParts Successful Response
+   * @throws ApiError
+   */
+  public static readPersonneWithParts(
+    data: PersonnesReadPersonneWithPartsData,
+  ): CancelablePromise<PersonnesReadPersonneWithPartsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/personnes/{personne_id}/with-parts",
+      path: {
+        personne_id: data.personneId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Membres Personne Morale
+   * Get all members of a personne morale (legal entity).
+   * @param data The data for the request.
+   * @param data.personneId
+   * @returns PersonnePublic Successful Response
+   * @throws ApiError
+   */
+  public static readMembresPersonneMorale(
+    data: PersonnesReadMembresPersonneMoraleData,
+  ): CancelablePromise<PersonnesReadMembresPersonneMoraleResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/personnes/{personne_id}/membres",
+      path: {
+        personne_id: data.personneId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class PrivateService {
+  /**
+   * Create User
+   * Create a new user.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns UserPublic Successful Response
+   * @throws ApiError
+   */
+  public static createUser(
+    data: PrivateCreateUserData,
+  ): CancelablePromise<PrivateCreateUserResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/private/users/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class ReferencesService {
+  /**
+   * Read Types Apport
+   * Get all types d'apport.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns TypesApportPublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypesApport(
+    data: ReferencesReadTypesApportData = {},
+  ): CancelablePromise<ReferencesReadTypesApportResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/references/types-apport",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Type Apport
+   * Create a new type d'apport.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns TypeApportPublic Successful Response
+   * @throws ApiError
+   */
+  public static createTypeApport(
+    data: ReferencesCreateTypeApportData,
+  ): CancelablePromise<ReferencesCreateTypeApportResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/references/types-apport",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Type Apport
+   * Get a specific type d'apport by ID.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns TypeApportPublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypeApport(
+    data: ReferencesReadTypeApportData,
+  ): CancelablePromise<ReferencesReadTypeApportResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/references/types-apport/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Type Apport
+   * Update an existing type d'apport.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @param data.requestBody
+   * @returns TypeApportPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateTypeApport(
+    data: ReferencesUpdateTypeApportData,
+  ): CancelablePromise<ReferencesUpdateTypeApportResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/references/types-apport/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Type Apport
+   * Delete a type d'apport.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteTypeApport(
+    data: ReferencesDeleteTypeApportData,
+  ): CancelablePromise<ReferencesDeleteTypeApportResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/references/types-apport/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Types Remboursement
+   * Get all types de remboursement.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @returns TypesRemboursementPublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypesRemboursement(
+    data: ReferencesReadTypesRemboursementData = {},
+  ): CancelablePromise<ReferencesReadTypesRemboursementResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/references/types-remboursement",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Type Remboursement
+   * Create a new type de remboursement.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns TypeRemboursementPublic Successful Response
+   * @throws ApiError
+   */
+  public static createTypeRemboursement(
+    data: ReferencesCreateTypeRemboursementData,
+  ): CancelablePromise<ReferencesCreateTypeRemboursementResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/references/types-remboursement",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Type Remboursement
+   * Get a specific type de remboursement by ID.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns TypeRemboursementPublic Successful Response
+   * @throws ApiError
+   */
+  public static readTypeRemboursement(
+    data: ReferencesReadTypeRemboursementData,
+  ): CancelablePromise<ReferencesReadTypeRemboursementResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/references/types-remboursement/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Type Remboursement
+   * Update an existing type de remboursement.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @param data.requestBody
+   * @returns TypeRemboursementPublic Successful Response
+   * @throws ApiError
+   */
+  public static updateTypeRemboursement(
+    data: ReferencesUpdateTypeRemboursementData,
+  ): CancelablePromise<ReferencesUpdateTypeRemboursementResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/references/types-remboursement/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Type Remboursement
+   * Delete a type de remboursement.
+   * @param data The data for the request.
+   * @param data.typeId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteTypeRemboursement(
+    data: ReferencesDeleteTypeRemboursementData,
+  ): CancelablePromise<ReferencesDeleteTypeRemboursementResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/references/types-remboursement/{type_id}",
+      path: {
+        type_id: data.typeId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+}
+
+export class StructuresService {
+  /**
+   * Read Structures
+   * Get all structures with optional type filter.
+   * @param data The data for the request.
+   * @param data.skip
+   * @param data.limit
+   * @param data.typeStructure
+   * @returns StructuresPublic Successful Response
+   * @throws ApiError
+   */
+  public static readStructures(
+    data: StructuresReadStructuresData = {},
+  ): CancelablePromise<StructuresReadStructuresResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/structures/",
+      query: {
+        skip: data.skip,
+        limit: data.limit,
+        type_structure: data.typeStructure,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Create Structure
+   * Create a new structure.
+   * @param data The data for the request.
+   * @param data.requestBody
+   * @returns StructurePublic Successful Response
+   * @throws ApiError
+   */
+  public static createStructure(
+    data: StructuresCreateStructureData,
+  ): CancelablePromise<StructuresCreateStructureResponse> {
+    return __request(OpenAPI, {
+      method: "POST",
+      url: "/api/v1/structures/",
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Read Structure
+   * Get a specific structure by ID.
+   * @param data The data for the request.
+   * @param data.structureId
+   * @returns StructurePublic Successful Response
+   * @throws ApiError
+   */
+  public static readStructure(
+    data: StructuresReadStructureData,
+  ): CancelablePromise<StructuresReadStructureResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/structures/{structure_id}",
+      path: {
+        structure_id: data.structureId,
+      },
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Update Structure
+   * Update an existing structure.
+   * @param data The data for the request.
+   * @param data.structureId
+   * @param data.requestBody
+   * @returns StructurePublic Successful Response
+   * @throws ApiError
+   */
+  public static updateStructure(
+    data: StructuresUpdateStructureData,
+  ): CancelablePromise<StructuresUpdateStructureResponse> {
+    return __request(OpenAPI, {
+      method: "PUT",
+      url: "/api/v1/structures/{structure_id}",
+      path: {
+        structure_id: data.structureId,
+      },
+      body: data.requestBody,
+      mediaType: "application/json",
+      errors: {
+        422: "Validation Error",
+      },
+    })
+  }
+
+  /**
+   * Delete Structure
+   * Delete a structure.
+   * @param data The data for the request.
+   * @param data.structureId
+   * @returns Message Successful Response
+   * @throws ApiError
+   */
+  public static deleteStructure(
+    data: StructuresDeleteStructureData,
+  ): CancelablePromise<StructuresDeleteStructureResponse> {
+    return __request(OpenAPI, {
+      method: "DELETE",
+      url: "/api/v1/structures/{structure_id}",
+      path: {
+        structure_id: data.structureId,
       },
       errors: {
         422: "Validation Error",

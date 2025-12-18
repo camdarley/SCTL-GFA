@@ -4,3 +4,8 @@ node_modules/
 /playwright-report/
 /blob-report/
 /playwright/.cache/
+
+# Legacy files
+*.mdb
+old-code/
+old-bases/

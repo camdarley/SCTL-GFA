@@ -17,9 +17,18 @@ import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
+import { Route as LayoutStructuresImport } from './routes/_layout/structures'
 import { Route as LayoutSettingsImport } from './routes/_layout/settings'
-import { Route as LayoutItemsImport } from './routes/_layout/items'
+import { Route as LayoutPersonnesImport } from './routes/_layout/personnes'
+import { Route as LayoutPartsRestantesImport } from './routes/_layout/parts-restantes'
+import { Route as LayoutPartsImport } from './routes/_layout/parts'
+import { Route as LayoutParcellesImport } from './routes/_layout/parcelles'
+import { Route as LayoutHistoriqueImport } from './routes/_layout/historique'
+import { Route as LayoutCadastreImport } from './routes/_layout/cadastre'
+import { Route as LayoutAnomaliesImport } from './routes/_layout/anomalies'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
+import { Route as LayoutActesImport } from './routes/_layout/actes'
+import { Route as LayoutPersonnesPersonneIdImport } from './routes/_layout/personnes.$personneId'
 
 // Create/Update Routes
 
@@ -53,19 +62,64 @@ const LayoutIndexRoute = LayoutIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutStructuresRoute = LayoutStructuresImport.update({
+  path: '/structures',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutSettingsRoute = LayoutSettingsImport.update({
   path: '/settings',
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutItemsRoute = LayoutItemsImport.update({
-  path: '/items',
+const LayoutPersonnesRoute = LayoutPersonnesImport.update({
+  path: '/personnes',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutPartsRestantesRoute = LayoutPartsRestantesImport.update({
+  path: '/parts-restantes',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutPartsRoute = LayoutPartsImport.update({
+  path: '/parts',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutParcellesRoute = LayoutParcellesImport.update({
+  path: '/parcelles',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutHistoriqueRoute = LayoutHistoriqueImport.update({
+  path: '/historique',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutCadastreRoute = LayoutCadastreImport.update({
+  path: '/cadastre',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutAnomaliesRoute = LayoutAnomaliesImport.update({
+  path: '/anomalies',
   getParentRoute: () => LayoutRoute,
 } as any)
 
 const LayoutAdminRoute = LayoutAdminImport.update({
   path: '/admin',
   getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutActesRoute = LayoutActesImport.update({
+  path: '/actes',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutPersonnesPersonneIdRoute = LayoutPersonnesPersonneIdImport.update({
+  path: '/$personneId',
+  getParentRoute: () => LayoutPersonnesRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -92,21 +146,57 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof SignupImport
       parentRoute: typeof rootRoute
     }
+    '/_layout/actes': {
+      preLoaderRoute: typeof LayoutActesImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/admin': {
       preLoaderRoute: typeof LayoutAdminImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/items': {
-      preLoaderRoute: typeof LayoutItemsImport
+    '/_layout/anomalies': {
+      preLoaderRoute: typeof LayoutAnomaliesImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/cadastre': {
+      preLoaderRoute: typeof LayoutCadastreImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/historique': {
+      preLoaderRoute: typeof LayoutHistoriqueImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/parcelles': {
+      preLoaderRoute: typeof LayoutParcellesImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/parts': {
+      preLoaderRoute: typeof LayoutPartsImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/parts-restantes': {
+      preLoaderRoute: typeof LayoutPartsRestantesImport
+      parentRoute: typeof LayoutImport
+    }
+    '/_layout/personnes': {
+      preLoaderRoute: typeof LayoutPersonnesImport
       parentRoute: typeof LayoutImport
     }
     '/_layout/settings': {
       preLoaderRoute: typeof LayoutSettingsImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/structures': {
+      preLoaderRoute: typeof LayoutStructuresImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/': {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
+    }
+    '/_layout/personnes/$personneId': {
+      preLoaderRoute: typeof LayoutPersonnesPersonneIdImport
+      parentRoute: typeof LayoutPersonnesImport
     }
   }
 }
@@ -115,9 +205,17 @@ declare module '@tanstack/react-router' {
 
 export const routeTree = rootRoute.addChildren([
   LayoutRoute.addChildren([
+    LayoutActesRoute,
     LayoutAdminRoute,
-    LayoutItemsRoute,
+    LayoutAnomaliesRoute,
+    LayoutCadastreRoute,
+    LayoutHistoriqueRoute,
+    LayoutParcellesRoute,
+    LayoutPartsRoute,
+    LayoutPartsRestantesRoute,
+    LayoutPersonnesRoute.addChildren([LayoutPersonnesPersonneIdRoute]),
     LayoutSettingsRoute,
+    LayoutStructuresRoute,
     LayoutIndexRoute,
   ]),
   LoginRoute,
