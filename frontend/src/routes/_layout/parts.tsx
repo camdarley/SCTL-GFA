@@ -16,12 +16,14 @@ import { FiPlus, FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
 import { NumerosPartsService, type NumeroPartWithDetails } from "@/client"
+import ActionnaireName from "@/components/Common/ActionnaireName"
 import AddNumeroParts from "@/components/Parts/AddNumeroParts"
 import EditNumeroParts from "@/components/Parts/EditNumeroParts"
 import DeleteNumeroParts from "@/components/Parts/DeleteNumeroParts"
 
 const partsSearchSchema = z.object({
   page: z.number().catch(1),
+  numPart: z.number().optional(),
 })
 
 export const Route = createFileRoute("/_layout/parts")({
@@ -31,34 +33,44 @@ export const Route = createFileRoute("/_layout/parts")({
 
 const PER_PAGE = 20
 
+type PartsSearch = { page: number; numPart?: number }
+
 function Parts() {
   const navigate = useNavigate({ from: Route.fullPath })
-  const { page } = Route.useSearch()
-  const [searchTerm, setSearchTerm] = useState("")
+  const { page, numPart } = Route.useSearch()
+  const [searchTerm, setSearchTerm] = useState(numPart?.toString() || "")
   const [isAddOpen, setIsAddOpen] = useState(false)
   const [editingPart, setEditingPart] = useState<NumeroPartWithDetails | null>(null)
 
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["numeros-parts", page],
+    queryKey: ["numeros-parts", page, numPart],
     queryFn: () =>
       NumerosPartsService.readNumerosParts({
         skip: (page - 1) * PER_PAGE,
         limit: PER_PAGE,
+        numPart: numPart ?? undefined,
       }),
   })
 
   const setPage = (newPage: number) => {
-    navigate({ search: { page: newPage } })
+    navigate({ search: (prev: PartsSearch) => ({ ...prev, page: newPage }) })
+  }
+
+  const handleSearch = () => {
+    const numPartValue = searchTerm ? parseInt(searchTerm, 10) : undefined
+    navigate({
+      search: { page: 1, numPart: numPartValue && !isNaN(numPartValue) ? numPartValue : undefined },
+    })
+  }
+
+  const clearSearch = () => {
+    setSearchTerm("")
+    navigate({ search: { page: 1 } })
   }
 
   const parts = data?.data || []
   const totalCount = data?.count || 0
   const totalPages = Math.ceil(totalCount / PER_PAGE)
-
-  // Filter parts by search term (by num_part)
-  const filteredParts = searchTerm
-    ? parts.filter((p) => p.num_part.toString().includes(searchTerm))
-    : parts
 
   return (
     <Container maxW="full" py={4}>
@@ -73,10 +85,17 @@ function Parts() {
             placeholder="Rechercher par numéro..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
+            onKeyDown={(e) => e.key === "Enter" && handleSearch()}
+            type="number"
           />
-          <Button ml={2}>
+          <Button ml={2} onClick={handleSearch}>
             <FiSearch />
           </Button>
+          {numPart && (
+            <Button ml={2} variant="ghost" colorPalette="red" onClick={clearSearch}>
+              Effacer
+            </Button>
+          )}
         </Flex>
         <Button colorPalette="blue" onClick={() => setIsAddOpen(true)}>
           <FiPlus />
@@ -103,7 +122,7 @@ function Parts() {
               </Table.Row>
             </Table.Header>
             <Table.Body>
-              {filteredParts.length === 0 ? (
+              {parts.length === 0 ? (
                 <Table.Row>
                   <Table.Cell colSpan={6}>
                     <Text textAlign="center" py={4}>
@@ -112,14 +131,20 @@ function Parts() {
                   </Table.Cell>
                 </Table.Row>
               ) : (
-                filteredParts.map((part) => (
+                parts.map((part) => (
                   <Table.Row key={part.id}>
                     <Table.Cell>{part.id}</Table.Cell>
                     <Table.Cell fontWeight="medium">{part.num_part}</Table.Cell>
                     <Table.Cell>
-                      {part.personne_nom
-                        ? `${part.personne_nom}${part.personne_prenom ? ` ${part.personne_prenom}` : ""}`
-                        : "-"}
+                      {part.id_personne && part.personne_nom ? (
+                        <ActionnaireName
+                          personneId={part.id_personne}
+                          nom={part.personne_nom}
+                          prenom={part.personne_prenom}
+                        />
+                      ) : (
+                        "-"
+                      )}
                     </Table.Cell>
                     <Table.Cell>{part.structure_nom || "-"}</Table.Cell>
                     <Table.Cell>

@@ -20,7 +20,6 @@ import { Route as LayoutIndexImport } from './routes/_layout/index'
 import { Route as LayoutStructuresImport } from './routes/_layout/structures'
 import { Route as LayoutSettingsImport } from './routes/_layout/settings'
 import { Route as LayoutPersonnesImport } from './routes/_layout/personnes'
-import { Route as LayoutPartsRestantesImport } from './routes/_layout/parts-restantes'
 import { Route as LayoutPartsImport } from './routes/_layout/parts'
 import { Route as LayoutParcellesImport } from './routes/_layout/parcelles'
 import { Route as LayoutHistoriqueImport } from './routes/_layout/historique'
@@ -28,7 +27,6 @@ import { Route as LayoutCadastreImport } from './routes/_layout/cadastre'
 import { Route as LayoutAnomaliesImport } from './routes/_layout/anomalies'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
 import { Route as LayoutActesImport } from './routes/_layout/actes'
-import { Route as LayoutPersonnesPersonneIdImport } from './routes/_layout/personnes.$personneId'
 
 // Create/Update Routes
 
@@ -77,11 +75,6 @@ const LayoutPersonnesRoute = LayoutPersonnesImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
-const LayoutPartsRestantesRoute = LayoutPartsRestantesImport.update({
-  path: '/parts-restantes',
-  getParentRoute: () => LayoutRoute,
-} as any)
-
 const LayoutPartsRoute = LayoutPartsImport.update({
   path: '/parts',
   getParentRoute: () => LayoutRoute,
@@ -115,11 +108,6 @@ const LayoutAdminRoute = LayoutAdminImport.update({
 const LayoutActesRoute = LayoutActesImport.update({
   path: '/actes',
   getParentRoute: () => LayoutRoute,
-} as any)
-
-const LayoutPersonnesPersonneIdRoute = LayoutPersonnesPersonneIdImport.update({
-  path: '/$personneId',
-  getParentRoute: () => LayoutPersonnesRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
@@ -174,10 +162,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutPartsImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/parts-restantes': {
-      preLoaderRoute: typeof LayoutPartsRestantesImport
-      parentRoute: typeof LayoutImport
-    }
     '/_layout/personnes': {
       preLoaderRoute: typeof LayoutPersonnesImport
       parentRoute: typeof LayoutImport
@@ -194,10 +178,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
     }
-    '/_layout/personnes/$personneId': {
-      preLoaderRoute: typeof LayoutPersonnesPersonneIdImport
-      parentRoute: typeof LayoutPersonnesImport
-    }
   }
 }
 
@@ -212,8 +192,7 @@ export const routeTree = rootRoute.addChildren([
     LayoutHistoriqueRoute,
     LayoutParcellesRoute,
     LayoutPartsRoute,
-    LayoutPartsRestantesRoute,
-    LayoutPersonnesRoute.addChildren([LayoutPersonnesPersonneIdRoute]),
+    LayoutPersonnesRoute,
     LayoutSettingsRoute,
     LayoutStructuresRoute,
     LayoutIndexRoute,

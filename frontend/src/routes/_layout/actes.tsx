@@ -19,6 +19,7 @@ import { ActesService, type ActeWithDetails } from "@/client"
 import AddActe from "@/components/Actes/AddActe"
 import EditActe from "@/components/Actes/EditActe"
 import DeleteActe from "@/components/Actes/DeleteActe"
+import ActeName from "@/components/Common/ActeName"
 
 const actesSearchSchema = z.object({
   page: z.number().catch(1),
@@ -126,7 +127,10 @@ function Actes() {
                   <Table.Row key={acte.id}>
                     <Table.Cell>{acte.id}</Table.Cell>
                     <Table.Cell fontWeight="medium">
-                      {acte.code_acte || "-"}
+                      <ActeName
+                        acteId={acte.id}
+                        codeActe={acte.code_acte || "-"}
+                      />
                     </Table.Cell>
                     <Table.Cell>{formatDate(acte.date_acte)}</Table.Cell>
                     <Table.Cell>{acte.libelle_acte || "-"}</Table.Cell>

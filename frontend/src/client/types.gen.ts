@@ -476,6 +476,16 @@ export type ParcelleWithSubdivisions = {
   subdivisions?: Array<SubdivisionSummary>
 }
 
+/**
+ * Totaux globaux des parts par structure
+ */
+export type PartsTotaux = {
+  gfa?: number
+  sctl?: number
+  total?: number
+  actionnaires?: number
+}
+
 export type PersonneCreate = {
   /**
    * M., Mme, etc.
@@ -661,8 +671,8 @@ export type PersonnePublic = {
   id_personne_morale: number | null
 }
 
-export type PersonnesPublic = {
-  data: Array<PersonnePublic>
+export type PersonnesWithPartsPublic = {
+  data: Array<PersonneWithParts>
   count: number
 }
 
@@ -1401,6 +1411,7 @@ export type NumerosPartsReadNumerosPartsData = {
   idPersonne?: number | null
   idStructure?: number | null
   limit?: number
+  numPart?: number | null
   numPartMax?: number | null
   numPartMin?: number | null
   skip?: number
@@ -1543,6 +1554,8 @@ export type ParcellesReadParcelleWithDetailsData = {
 
 export type ParcellesReadParcelleWithDetailsResponse = ParcelleWithDetails
 
+export type PersonnesReadPartsTotalsResponse = PartsTotaux
+
 export type PersonnesReadPersonnesData = {
   adherent?: boolean | null
   codePostal?: string | null
@@ -1559,7 +1572,7 @@ export type PersonnesReadPersonnesData = {
   ville?: string | null
 }
 
-export type PersonnesReadPersonnesResponse = PersonnesPublic
+export type PersonnesReadPersonnesResponse = PersonnesWithPartsPublic
 
 export type PersonnesCreatePersonneData = {
   requestBody: PersonneCreate

@@ -11,7 +11,6 @@ import {
   FiLayers,
   FiAlertTriangle,
   FiClock,
-  FiPieChart,
 } from "react-icons/fi"
 import type { IconType } from "react-icons/lib"
 
@@ -39,7 +38,6 @@ const mainItems: Item[] = [
 const gersaItems: Item[] = [
   { icon: FiUsers, title: "Actionnaires", path: "/personnes" },
   { icon: FiLayers, title: "Parts", path: "/parts" },
-  { icon: FiPieChart, title: "Parts Restantes", path: "/parts-restantes" },
   { icon: FiClock, title: "Historique", path: "/historique" },
   { icon: FiFileText, title: "Actes", path: "/actes" },
   { icon: FiGrid, title: "Structures", path: "/structures" },

@@ -433,6 +433,172 @@ def get_personne_with_parts(*, session: Session, personne_id: int) -> PersonneWi
     )
 
 
+def get_personnes_with_parts(
+    *,
+    session: Session,
+    skip: int = 0,
+    limit: int = 100,
+    # Filters
+    nom: str | None = None,
+    ville: str | None = None,
+    code_postal: str | None = None,
+    id_structure: int | None = None,
+    npai: bool | None = None,
+    decede: bool | None = None,
+    termine: bool | None = None,
+    fondateur: bool | None = None,
+    de_droit: bool | None = None,
+    adherent: bool | None = None,
+    est_personne_morale: bool | None = None,
+) -> tuple[list[PersonneWithParts], int]:
+    """
+    Get personnes with calculated share counts in an optimized single query.
+    Avoids N+1 queries by computing part counts using subqueries.
+    """
+    # Subquery for GFA parts count per personne
+    gfa_subquery = (
+        select(
+            NumeroPart.id_personne,
+            func.count().label("gfa_count")
+        )
+        .join(Structure, NumeroPart.id_structure == Structure.id)
+        .where(NumeroPart.termine == False)
+        .where(Structure.type_structure == TypeStructure.GFA)
+        .group_by(NumeroPart.id_personne)
+        .subquery()
+    )
+
+    # Subquery for SCTL parts count per personne
+    sctl_subquery = (
+        select(
+            NumeroPart.id_personne,
+            func.count().label("sctl_count")
+        )
+        .join(Structure, NumeroPart.id_structure == Structure.id)
+        .where(NumeroPart.termine == False)
+        .where(Structure.type_structure == TypeStructure.TSL)
+        .group_by(NumeroPart.id_personne)
+        .subquery()
+    )
+
+    # Main query with outer joins to subqueries
+    statement = (
+        select(
+            Personne,
+            func.coalesce(gfa_subquery.c.gfa_count, 0).label("nb_parts_gfa"),
+            func.coalesce(sctl_subquery.c.sctl_count, 0).label("nb_parts_sctl"),
+        )
+        .outerjoin(gfa_subquery, Personne.id == gfa_subquery.c.id_personne)
+        .outerjoin(sctl_subquery, Personne.id == sctl_subquery.c.id_personne)
+    )
+
+    # Apply filters
+    if nom:
+        statement = statement.where(Personne.nom.ilike(f"%{nom}%"))
+    if ville:
+        statement = statement.where(Personne.ville.ilike(f"%{ville}%"))
+    if code_postal:
+        statement = statement.where(Personne.code_postal == code_postal)
+    if id_structure is not None:
+        statement = statement.where(Personne.id_structure == id_structure)
+    if npai is not None:
+        statement = statement.where(Personne.npai == npai)
+    if decede is not None:
+        statement = statement.where(Personne.decede == decede)
+    if termine is not None:
+        statement = statement.where(Personne.termine == termine)
+    if fondateur is not None:
+        statement = statement.where(Personne.fondateur == fondateur)
+    if de_droit is not None:
+        statement = statement.where(Personne.de_droit == de_droit)
+    if adherent is not None:
+        statement = statement.where(Personne.adherent == adherent)
+    if est_personne_morale is not None:
+        statement = statement.where(Personne.est_personne_morale == est_personne_morale)
+
+    # Count total (use a separate count query on Personne only for accuracy)
+    count_statement = select(func.count()).select_from(Personne)
+    if nom:
+        count_statement = count_statement.where(Personne.nom.ilike(f"%{nom}%"))
+    if ville:
+        count_statement = count_statement.where(Personne.ville.ilike(f"%{ville}%"))
+    if code_postal:
+        count_statement = count_statement.where(Personne.code_postal == code_postal)
+    if id_structure is not None:
+        count_statement = count_statement.where(Personne.id_structure == id_structure)
+    if npai is not None:
+        count_statement = count_statement.where(Personne.npai == npai)
+    if decede is not None:
+        count_statement = count_statement.where(Personne.decede == decede)
+    if termine is not None:
+        count_statement = count_statement.where(Personne.termine == termine)
+    if fondateur is not None:
+        count_statement = count_statement.where(Personne.fondateur == fondateur)
+    if de_droit is not None:
+        count_statement = count_statement.where(Personne.de_droit == de_droit)
+    if adherent is not None:
+        count_statement = count_statement.where(Personne.adherent == adherent)
+    if est_personne_morale is not None:
+        count_statement = count_statement.where(Personne.est_personne_morale == est_personne_morale)
+    count = session.exec(count_statement).one()
+
+    # Apply ordering and pagination
+    statement = statement.order_by(Personne.nom, Personne.prenom).offset(skip).limit(limit)
+    results = session.exec(statement).all()
+
+    # Build PersonneWithParts objects
+    personnes_with_parts: list[PersonneWithParts] = []
+    for row in results:
+        personne = row[0]
+        gfa_count = row[1]
+        sctl_count = row[2]
+        personnes_with_parts.append(
+            PersonneWithParts(
+                **personne.model_dump(),
+                nb_parts_gfa=gfa_count,
+                nb_parts_sctl=sctl_count,
+                nb_parts_total=gfa_count + sctl_count,
+            )
+        )
+
+    return personnes_with_parts, count
+
+
+def get_parts_totals(*, session: Session) -> dict[str, int]:
+    """Get global totals for all non-terminated parts."""
+    # Count GFA parts
+    gfa_total = session.exec(
+        select(func.count())
+        .select_from(NumeroPart)
+        .join(Structure, NumeroPart.id_structure == Structure.id)
+        .where(NumeroPart.termine == False)
+        .where(Structure.type_structure == TypeStructure.GFA)
+    ).one()
+
+    # Count SCTL parts
+    sctl_total = session.exec(
+        select(func.count())
+        .select_from(NumeroPart)
+        .join(Structure, NumeroPart.id_structure == Structure.id)
+        .where(NumeroPart.termine == False)
+        .where(Structure.type_structure == TypeStructure.TSL)
+    ).one()
+
+    # Count unique actionnaires (personnes with at least one non-terminated part)
+    actionnaires_count = session.exec(
+        select(func.count(func.distinct(NumeroPart.id_personne)))
+        .select_from(NumeroPart)
+        .where(NumeroPart.termine == False)
+    ).one()
+
+    return {
+        "gfa": gfa_total,
+        "sctl": sctl_total,
+        "total": gfa_total + sctl_total,
+        "actionnaires": actionnaires_count,
+    }
+
+
 def create_personne(*, session: Session, personne_in: PersonneCreate) -> Personne:
     db_obj = Personne.model_validate(personne_in)
     session.add(db_obj)
@@ -482,7 +648,8 @@ def get_mouvements(
     id_acte: int | None = None,
     sens: bool | None = None,
 ) -> tuple[list[Mouvement], int]:
-    statement = select(Mouvement)
+    # Join with Acte to sort by effective date (date_operation or date_acte)
+    statement = select(Mouvement).outerjoin(Acte, Mouvement.id_acte == Acte.id)
 
     if id_personne is not None:
         statement = statement.where(Mouvement.id_personne == id_personne)
@@ -494,7 +661,9 @@ def get_mouvements(
     count_statement = select(func.count()).select_from(statement.subquery())
     count = session.exec(count_statement).one()
 
-    statement = statement.order_by(Mouvement.date_operation.desc()).offset(skip).limit(limit)
+    # Sort by effective date: use date_operation if available, otherwise use acte.date_acte
+    effective_date = func.coalesce(Mouvement.date_operation, Acte.date_acte)
+    statement = statement.order_by(effective_date.desc()).offset(skip).limit(limit)
     mouvements = session.exec(statement).all()
     return list(mouvements), count
 
@@ -546,6 +715,7 @@ def get_numeros_parts(
     distribue: bool | None = None,
     num_part_min: int | None = None,
     num_part_max: int | None = None,
+    num_part: int | None = None,
 ) -> tuple[list[NumeroPart], int]:
     statement = select(NumeroPart)
 
@@ -561,6 +731,8 @@ def get_numeros_parts(
         statement = statement.where(NumeroPart.num_part >= num_part_min)
     if num_part_max is not None:
         statement = statement.where(NumeroPart.num_part <= num_part_max)
+    if num_part is not None:
+        statement = statement.where(NumeroPart.num_part == num_part)
 
     count_statement = select(func.count()).select_from(statement.subquery())
     count = session.exec(count_statement).one()

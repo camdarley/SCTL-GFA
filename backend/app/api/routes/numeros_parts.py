@@ -40,6 +40,7 @@ def read_numeros_parts(
     distribue: bool | None = None,
     num_part_min: int | None = None,
     num_part_max: int | None = None,
+    num_part: int | None = None,
 ) -> NumeroPartsWithDetailsPublic:
     """Get all numeros parts with optional filters and details."""
     parts, count = crud.get_numeros_parts(
@@ -52,6 +53,7 @@ def read_numeros_parts(
         distribue=distribue,
         num_part_min=num_part_min,
         num_part_max=num_part_max,
+        num_part=num_part,
     )
     # Enrich with person and structure names
     parts_with_details = []

@@ -8,10 +8,12 @@ from app import crud
 from app.api.deps import SessionDep
 from app.models import (
     Message,
+    PartsTotaux,
     Personne,
     PersonneCreate,
     PersonnePublic,
     PersonnesPublic,
+    PersonnesWithPartsPublic,
     PersonneUpdate,
     PersonneWithParts,
 )
@@ -19,7 +21,14 @@ from app.models import (
 router = APIRouter(prefix="/personnes", tags=["personnes"])
 
 
-@router.get("/", response_model=PersonnesPublic)
+@router.get("/totals", response_model=PartsTotaux)
+def read_parts_totals(session: SessionDep) -> PartsTotaux:
+    """Get global totals for all non-terminated parts (GFA, SCTL, total, actionnaires count)."""
+    totals = crud.get_parts_totals(session=session)
+    return PartsTotaux(**totals)
+
+
+@router.get("/", response_model=PersonnesWithPartsPublic)
 def read_personnes(
     session: SessionDep,
     skip: int = 0,
@@ -35,13 +44,14 @@ def read_personnes(
     de_droit: bool | None = None,
     adherent: bool | None = None,
     est_personne_morale: bool | None = None,
-) -> PersonnesPublic:
+) -> PersonnesWithPartsPublic:
     """
-    Get all personnes with optional filters.
+    Get all personnes with optional filters and calculated share counts.
 
+    Returns personnes with nb_parts_gfa, nb_parts_sctl, nb_parts_total.
     Filters match the MultiCrit search from the original application.
     """
-    personnes, count = crud.get_personnes(
+    personnes, count = crud.get_personnes_with_parts(
         session=session,
         skip=skip,
         limit=limit,
@@ -57,7 +67,7 @@ def read_personnes(
         adherent=adherent,
         est_personne_morale=est_personne_morale,
     )
-    return PersonnesPublic(data=personnes, count=count)
+    return PersonnesWithPartsPublic(data=personnes, count=count)
 
 
 @router.get("/{personne_id}", response_model=PersonnePublic)

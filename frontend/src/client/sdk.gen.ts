@@ -147,6 +147,7 @@ import type {
   ParcellesDeleteParcelleResponse,
   ParcellesReadParcelleWithDetailsData,
   ParcellesReadParcelleWithDetailsResponse,
+  PersonnesReadPartsTotalsResponse,
   PersonnesReadPersonnesData,
   PersonnesReadPersonnesResponse,
   PersonnesCreatePersonneData,
@@ -1552,6 +1553,7 @@ export class NumerosPartsService {
    * @param data.distribue
    * @param data.numPartMin
    * @param data.numPartMax
+   * @param data.numPart
    * @returns NumeroPartsWithDetailsPublic Successful Response
    * @throws ApiError
    */
@@ -1570,6 +1572,7 @@ export class NumerosPartsService {
         distribue: data.distribue,
         num_part_min: data.numPartMin,
         num_part_max: data.numPartMax,
+        num_part: data.numPart,
       },
       errors: {
         422: "Validation Error",
@@ -2016,9 +2019,23 @@ export class ParcellesService {
 
 export class PersonnesService {
   /**
+   * Read Parts Totals
+   * Get global totals for all non-terminated parts (GFA, SCTL, total, actionnaires count).
+   * @returns PartsTotaux Successful Response
+   * @throws ApiError
+   */
+  public static readPartsTotals(): CancelablePromise<PersonnesReadPartsTotalsResponse> {
+    return __request(OpenAPI, {
+      method: "GET",
+      url: "/api/v1/personnes/totals",
+    })
+  }
+
+  /**
    * Read Personnes
-   * Get all personnes with optional filters.
+   * Get all personnes with optional filters and calculated share counts.
    *
+   * Returns personnes with nb_parts_gfa, nb_parts_sctl, nb_parts_total.
    * Filters match the MultiCrit search from the original application.
    * @param data The data for the request.
    * @param data.skip
@@ -2034,7 +2051,7 @@ export class PersonnesService {
    * @param data.deDroit
    * @param data.adherent
    * @param data.estPersonneMorale
-   * @returns PersonnesPublic Successful Response
+   * @returns PersonnesWithPartsPublic Successful Response
    * @throws ApiError
    */
   public static readPersonnes(

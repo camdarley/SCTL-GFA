@@ -980,6 +980,14 @@ class FermageTotaux(SQLModel):
     nb_parcelles: int = 0
 
 
+class PartsTotaux(SQLModel):
+    """Totaux globaux des parts par structure"""
+    gfa: int = 0
+    sctl: int = 0
+    total: int = 0
+    actionnaires: int = 0
+
+
 class NumeroPartWithDetails(NumeroPartPublic):
     """NumeroPart avec noms de la personne et de la structure"""
     personne_nom: str | None = None

@@ -11,7 +11,7 @@ import {
   VStack,
 } from "@chakra-ui/react"
 import { useQuery } from "@tanstack/react-query"
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router"
+import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
 import { FiArrowDown, FiArrowUp, FiFilter } from "react-icons/fi"
 import { z } from "zod"
@@ -21,6 +21,8 @@ import {
   MouvementsService,
   PersonnesService,
 } from "@/client"
+import ActionnaireName from "@/components/Common/ActionnaireName"
+import ActeName from "@/components/Common/ActeName"
 import {
   PaginationItems,
   PaginationNextTrigger,
@@ -115,6 +117,10 @@ function HistoriquePage() {
   const getPersonneName = (idPersonne: number) => {
     const p = personnes.find((p) => p.id === idPersonne)
     return p ? `${p.nom} ${p.prenom || ""}`.trim() : `#${idPersonne}`
+  }
+
+  const getPersonneData = (idPersonne: number) => {
+    return personnes.find((p) => p.id === idPersonne)
   }
 
   const getActeCode = (idActe: number | null) => {
@@ -395,20 +401,26 @@ function HistoriquePage() {
                       )}
                     </Table.Cell>
                     <Table.Cell>
-                      <Link to={`/personnes/${mvt.id_personne}`}>
-                        <Text
-                          color="blue.500"
-                          _hover={{ textDecoration: "underline" }}
-                          fontWeight="medium"
-                        >
-                          {getPersonneName(mvt.id_personne)}
-                        </Text>
-                      </Link>
+                      {(() => {
+                        const p = getPersonneData(mvt.id_personne)
+                        return p ? (
+                          <ActionnaireName
+                            personneId={p.id}
+                            nom={p.nom}
+                            prenom={p.prenom}
+                          />
+                        ) : (
+                          <Text>#{mvt.id_personne}</Text>
+                        )
+                      })()}
                     </Table.Cell>
                     <Table.Cell fontWeight="bold">{mvt.nb_parts}</Table.Cell>
                     <Table.Cell>
                       {mvt.id_acte ? (
-                        <Badge colorPalette="purple">{getActeCode(mvt.id_acte)}</Badge>
+                        <ActeName
+                          acteId={mvt.id_acte}
+                          codeActe={getActeCode(mvt.id_acte) || `#${mvt.id_acte}`}
+                        />
                       ) : (
                         <Badge colorPalette="orange">Sans acte</Badge>
                       )}
