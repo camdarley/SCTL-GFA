@@ -44,6 +44,7 @@ from app.models import (
     Mouvement,
     MouvementCreate,
     MouvementUpdate,
+    MouvementWithDetails,
     # Share numbers
     NumeroPart,
     NumeroPartCreate,
@@ -666,6 +667,108 @@ def get_mouvements(
     statement = statement.order_by(effective_date.desc()).offset(skip).limit(limit)
     mouvements = session.exec(statement).all()
     return list(mouvements), count
+
+
+def get_mouvements_with_details(
+    *,
+    session: Session,
+    skip: int = 0,
+    limit: int = 100,
+    id_personne: int | None = None,
+    id_acte: int | None = None,
+    sens: bool | None = None,
+    max_parts_display: int = 10,
+) -> tuple[list[MouvementWithDetails], int]:
+    """
+    Get mouvements with personne and acte details in a single optimized query.
+    Avoids N+1 queries by joining with Personne and Acte tables.
+    Also fetches the related share numbers (numeros_parts) for each mouvement.
+    """
+    # Main query with joins to Personne and Acte
+    statement = (
+        select(
+            Mouvement,
+            Personne.nom.label("personne_nom"),
+            Personne.prenom.label("personne_prenom"),
+            Acte.code_acte.label("code_acte"),
+            Acte.date_acte.label("date_acte"),
+        )
+        .join(Personne, Mouvement.id_personne == Personne.id)
+        .outerjoin(Acte, Mouvement.id_acte == Acte.id)
+    )
+
+    # Apply filters
+    if id_personne is not None:
+        statement = statement.where(Mouvement.id_personne == id_personne)
+    if id_acte is not None:
+        statement = statement.where(Mouvement.id_acte == id_acte)
+    if sens is not None:
+        statement = statement.where(Mouvement.sens == sens)
+
+    # Count query
+    count_statement = select(func.count()).select_from(Mouvement)
+    if id_personne is not None:
+        count_statement = count_statement.where(Mouvement.id_personne == id_personne)
+    if id_acte is not None:
+        count_statement = count_statement.where(Mouvement.id_acte == id_acte)
+    if sens is not None:
+        count_statement = count_statement.where(Mouvement.sens == sens)
+    count = session.exec(count_statement).one()
+
+    # Sort by effective date: use date_operation if available, otherwise use acte.date_acte
+    effective_date = func.coalesce(Mouvement.date_operation, Acte.date_acte)
+    statement = statement.order_by(effective_date.desc()).offset(skip).limit(limit)
+    results = session.exec(statement).all()
+
+    # Get mouvement IDs to fetch related parts
+    mouvement_ids = [row[0].id for row in results]
+
+    # Fetch all related numeros_parts for these mouvements in one query
+    parts_by_mouvement: dict[int, list[int]] = {}
+    parts_count_by_mouvement: dict[int, int] = {}
+    if mouvement_ids:
+        # Get counts first
+        count_query = (
+            select(NumeroPart.id_mouvement, func.count().label("cnt"))
+            .where(NumeroPart.id_mouvement.in_(mouvement_ids))
+            .group_by(NumeroPart.id_mouvement)
+        )
+        count_results = session.exec(count_query).all()
+        for id_mvt, cnt in count_results:
+            parts_count_by_mouvement[id_mvt] = cnt
+
+        # Get num_part values (limited per mouvement for display)
+        parts_query = (
+            select(NumeroPart.id_mouvement, NumeroPart.num_part)
+            .where(NumeroPart.id_mouvement.in_(mouvement_ids))
+            .order_by(NumeroPart.id_mouvement, NumeroPart.num_part)
+        )
+        parts_results = session.exec(parts_query).all()
+
+        for id_mvt, num_part in parts_results:
+            if id_mvt not in parts_by_mouvement:
+                parts_by_mouvement[id_mvt] = []
+            # Only keep up to max_parts_display per mouvement
+            if len(parts_by_mouvement[id_mvt]) < max_parts_display:
+                parts_by_mouvement[id_mvt].append(num_part)
+
+    # Build MouvementWithDetails objects
+    mouvements_with_details: list[MouvementWithDetails] = []
+    for row in results:
+        mouvement = row[0]
+        mouvements_with_details.append(
+            MouvementWithDetails(
+                **mouvement.model_dump(),
+                personne_nom=row[1],
+                personne_prenom=row[2],
+                code_acte=row[3],
+                date_acte=row[4],
+                numeros_parts=parts_by_mouvement.get(mouvement.id, []),
+                numeros_parts_count=parts_count_by_mouvement.get(mouvement.id, 0),
+            )
+        )
+
+    return mouvements_with_details, count
 
 
 def get_mouvement(*, session: Session, mouvement_id: int) -> Mouvement | None:

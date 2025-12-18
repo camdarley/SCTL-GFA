@@ -250,8 +250,8 @@ export type MouvementPublic = {
   id_type_remboursement: number | null
 }
 
-export type MouvementsPublic = {
-  data: Array<MouvementPublic>
+export type MouvementsWithDetailsPublic = {
+  data: Array<MouvementWithDetails>
   count: number
 }
 
@@ -263,6 +263,32 @@ export type MouvementUpdate = {
   id_acte?: number | null
   id_type_apport?: number | null
   id_type_remboursement?: number | null
+}
+
+/**
+ * Mouvement avec détails de l'actionnaire et de l'acte
+ */
+export type MouvementWithDetails = {
+  date_operation?: string | null
+  /**
+   * true=acquisition (+), false=cession (-)
+   */
+  sens?: boolean
+  /**
+   * Nombre de parts concernées
+   */
+  nb_parts?: number
+  id: number
+  id_personne: number
+  id_acte: number | null
+  id_type_apport: number | null
+  id_type_remboursement: number | null
+  personne_nom?: string | null
+  personne_prenom?: string | null
+  code_acte?: string | null
+  date_acte?: string | null
+  numeros_parts?: Array<number>
+  numeros_parts_count?: number
 }
 
 export type NewPassword = {
@@ -331,7 +357,7 @@ export type NumeroPartUpdate = {
 }
 
 /**
- * NumeroPart avec noms de la personne et de la structure
+ * NumeroPart avec noms de la personne et de la structure, et détails du mouvement
  */
 export type NumeroPartWithDetails = {
   /**
@@ -357,6 +383,9 @@ export type NumeroPartWithDetails = {
   personne_nom?: string | null
   personne_prenom?: string | null
   structure_nom?: string | null
+  mouvement_sens?: boolean | null
+  mouvement_date?: string | null
+  mouvement_code_acte?: string | null
 }
 
 export type ParcelleCreate = {
@@ -1379,7 +1408,7 @@ export type MouvementsReadMouvementsData = {
   skip?: number
 }
 
-export type MouvementsReadMouvementsResponse = MouvementsPublic
+export type MouvementsReadMouvementsResponse = MouvementsWithDetailsPublic
 
 export type MouvementsCreateMouvementData = {
   requestBody: MouvementCreate

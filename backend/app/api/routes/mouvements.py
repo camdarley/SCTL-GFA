@@ -11,14 +11,14 @@ from app.models import (
     Mouvement,
     MouvementCreate,
     MouvementPublic,
-    MouvementsPublic,
+    MouvementsWithDetailsPublic,
     MouvementUpdate,
 )
 
 router = APIRouter(prefix="/mouvements", tags=["mouvements"])
 
 
-@router.get("/", response_model=MouvementsPublic)
+@router.get("/", response_model=MouvementsWithDetailsPublic)
 def read_mouvements(
     session: SessionDep,
     skip: int = 0,
@@ -26,14 +26,15 @@ def read_mouvements(
     id_personne: int | None = None,
     id_acte: int | None = None,
     sens: bool | None = None,
-) -> MouvementsPublic:
+) -> MouvementsWithDetailsPublic:
     """
-    Get all mouvements with optional filters.
+    Get all mouvements with optional filters and enriched details.
 
+    Returns mouvements with personne_nom, personne_prenom, code_acte, date_acte.
     - sens=true: acquisitions (+)
     - sens=false: cessions (-)
     """
-    mouvements, count = crud.get_mouvements(
+    mouvements, count = crud.get_mouvements_with_details(
         session=session,
         skip=skip,
         limit=limit,
@@ -41,7 +42,7 @@ def read_mouvements(
         id_acte=id_acte,
         sens=sens,
     )
-    return MouvementsPublic(data=mouvements, count=count)
+    return MouvementsWithDetailsPublic(data=mouvements, count=count)
 
 
 @router.get("/{mouvement_id}", response_model=MouvementPublic)

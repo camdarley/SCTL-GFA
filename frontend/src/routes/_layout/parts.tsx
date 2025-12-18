@@ -12,7 +12,7 @@ import {
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute, useNavigate } from "@tanstack/react-router"
 import { useState } from "react"
-import { FiPlus, FiSearch } from "react-icons/fi"
+import { FiArrowDown, FiArrowUp, FiPlus, FiSearch } from "react-icons/fi"
 import { z } from "zod"
 
 import { NumerosPartsService, type NumeroPartWithDetails } from "@/client"
@@ -117,6 +117,7 @@ function Parts() {
                 <Table.ColumnHeader>Numéro Part</Table.ColumnHeader>
                 <Table.ColumnHeader>Personne</Table.ColumnHeader>
                 <Table.ColumnHeader>Structure</Table.ColumnHeader>
+                <Table.ColumnHeader>Mouvement</Table.ColumnHeader>
                 <Table.ColumnHeader>État</Table.ColumnHeader>
                 <Table.ColumnHeader>Actions</Table.ColumnHeader>
               </Table.Row>
@@ -124,7 +125,7 @@ function Parts() {
             <Table.Body>
               {parts.length === 0 ? (
                 <Table.Row>
-                  <Table.Cell colSpan={6}>
+                  <Table.Cell colSpan={7}>
                     <Text textAlign="center" py={4}>
                       Aucun numéro de parts trouvé.
                     </Text>
@@ -147,6 +148,23 @@ function Parts() {
                       )}
                     </Table.Cell>
                     <Table.Cell>{part.structure_nom || "-"}</Table.Cell>
+                    <Table.Cell>
+                      {part.mouvement_sens !== null && part.mouvement_sens !== undefined ? (
+                        <Flex gap={1} align="center">
+                          <Badge colorPalette={part.mouvement_sens ? "green" : "red"} fontWeight="bold">
+                            {part.mouvement_sens ? <FiArrowUp /> : <FiArrowDown />}
+                          </Badge>
+                          <Text fontSize="xs" color="gray.600" _dark={{ color: "gray.400" }}>
+                            {part.mouvement_date
+                              ? new Date(part.mouvement_date).toLocaleDateString("fr-FR")
+                              : ""}
+                            {part.mouvement_code_acte && ` (${part.mouvement_code_acte})`}
+                          </Text>
+                        </Flex>
+                      ) : (
+                        <Text fontSize="sm" color="gray.400">-</Text>
+                      )}
+                    </Table.Cell>
                     <Table.Cell>
                       {part.termine ? (
                         <Badge colorPalette="green">Terminée</Badge>

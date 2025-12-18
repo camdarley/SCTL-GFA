@@ -18,7 +18,6 @@ import { FiArrowDown, FiArrowUp, FiEdit, FiFileText } from "react-icons/fi"
 import {
   ActesService,
   MouvementsService,
-  PersonnesService,
   StructuresService,
   type ActePublic,
 } from "@/client"
@@ -66,32 +65,20 @@ export default function FicheActe({
     enabled: isOpen,
   })
 
-  // Fetch mouvements for this acte
+  // Fetch mouvements for this acte (backend returns enriched data with personne_nom, numeros_parts)
   const { data: mouvementsData, isLoading: isLoadingMouvements } = useQuery({
     queryKey: ["mouvements", "acte", acteId],
     queryFn: () => MouvementsService.readMouvements({ idActe: acteId, limit: 1000 }),
     enabled: isOpen && acteId > 0,
   })
 
-  // Fetch personnes for enrichment
-  const { data: personnesData } = useQuery({
-    queryKey: ["personnes", "all"],
-    queryFn: () => PersonnesService.readPersonnes({ limit: 10000 }),
-    enabled: isOpen,
-  })
-
   const structures = structuresData?.data ?? []
   const mouvements = mouvementsData?.data ?? []
-  const personnes = personnesData?.data ?? []
 
   const getStructureName = (idStructure: number | null | undefined) => {
     if (!idStructure) return "-"
     const structure = structures.find((s) => s.id === idStructure)
     return structure?.nom_structure ?? "-"
-  }
-
-  const getPersonneData = (idPersonne: number) => {
-    return personnes.find((p) => p.id === idPersonne)
   }
 
   // Calculate totals from mouvements
@@ -295,47 +282,51 @@ export default function FicheActe({
                           <Table.Header>
                             <Table.Row>
                               <Table.ColumnHeader>Date</Table.ColumnHeader>
-                              <Table.ColumnHeader>Sens</Table.ColumnHeader>
+                              <Table.ColumnHeader>Parts</Table.ColumnHeader>
                               <Table.ColumnHeader>Personne</Table.ColumnHeader>
-                              <Table.ColumnHeader>Nb Parts</Table.ColumnHeader>
+                              <Table.ColumnHeader>N° de parts</Table.ColumnHeader>
                             </Table.Row>
                           </Table.Header>
                           <Table.Body>
-                            {mouvements.map((mvt) => {
-                              const personne = getPersonneData(mvt.id_personne)
-                              return (
-                                <Table.Row key={mvt.id}>
-                                  <Table.Cell>
-                                    {formatDate(mvt.date_operation) !== "-"
-                                      ? formatDate(mvt.date_operation)
-                                      : formatDate(acte.date_acte)}
-                                  </Table.Cell>
-                                  <Table.Cell>
-                                    {mvt.sens ? (
-                                      <Badge colorPalette="green" size="sm">
-                                        <FiArrowUp /> +
-                                      </Badge>
-                                    ) : (
-                                      <Badge colorPalette="red" size="sm">
-                                        <FiArrowDown /> -
-                                      </Badge>
-                                    )}
-                                  </Table.Cell>
-                                  <Table.Cell>
-                                    {personne ? (
-                                      <ActionnaireName
-                                        personneId={personne.id}
-                                        nom={personne.nom}
-                                        prenom={personne.prenom}
-                                      />
-                                    ) : (
-                                      <Text>#{mvt.id_personne}</Text>
-                                    )}
-                                  </Table.Cell>
-                                  <Table.Cell fontWeight="bold">{mvt.nb_parts}</Table.Cell>
-                                </Table.Row>
-                              )
-                            })}
+                            {mouvements.map((mvt) => (
+                              <Table.Row key={mvt.id}>
+                                <Table.Cell>
+                                  {formatDate(mvt.date_operation) !== "-"
+                                    ? formatDate(mvt.date_operation)
+                                    : formatDate(acte.date_acte)}
+                                </Table.Cell>
+                                <Table.Cell>
+                                  <Badge colorPalette={mvt.sens ? "green" : "red"} fontWeight="bold">
+                                    {mvt.sens ? <FiArrowUp /> : <FiArrowDown />} {mvt.sens ? "+" : "-"}{mvt.nb_parts}
+                                  </Badge>
+                                </Table.Cell>
+                                <Table.Cell>
+                                  {mvt.personne_nom ? (
+                                    <ActionnaireName
+                                      personneId={mvt.id_personne}
+                                      nom={mvt.personne_nom}
+                                      prenom={mvt.personne_prenom}
+                                    />
+                                  ) : (
+                                    <Text>#{mvt.id_personne}</Text>
+                                  )}
+                                </Table.Cell>
+                                <Table.Cell>
+                                  {mvt.numeros_parts && mvt.numeros_parts.length > 0 ? (
+                                    <Text fontSize="xs" color="gray.600" _dark={{ color: "gray.400" }}>
+                                      {mvt.numeros_parts.join(", ")}
+                                      {(mvt.numeros_parts_count ?? 0) > mvt.numeros_parts.length && (
+                                        <Text as="span" color="gray.400" _dark={{ color: "gray.500" }}>
+                                          {" "}+{(mvt.numeros_parts_count ?? 0) - mvt.numeros_parts.length}
+                                        </Text>
+                                      )}
+                                    </Text>
+                                  ) : (
+                                    <Text fontSize="xs" color="gray.400">-</Text>
+                                  )}
+                                </Table.Cell>
+                              </Table.Row>
+                            ))}
                           </Table.Body>
                         </Table.Root>
                       )}

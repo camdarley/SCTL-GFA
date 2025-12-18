@@ -922,6 +922,9 @@ class MouvementWithDetails(MouvementPublic):
     personne_prenom: str | None = None
     code_acte: str | None = None
     date_acte: date | None = None
+    # Liste des numéros de parts concernés (limité à 10 max pour l'affichage)
+    numeros_parts: list[int] = []
+    numeros_parts_count: int = 0  # Nombre total de parts liées
 
 
 class MouvementsWithDetailsPublic(SQLModel):
@@ -989,10 +992,14 @@ class PartsTotaux(SQLModel):
 
 
 class NumeroPartWithDetails(NumeroPartPublic):
-    """NumeroPart avec noms de la personne et de la structure"""
+    """NumeroPart avec noms de la personne et de la structure, et détails du mouvement"""
     personne_nom: str | None = None
     personne_prenom: str | None = None
     structure_nom: str | None = None
+    # Détails du mouvement associé
+    mouvement_sens: bool | None = None
+    mouvement_date: date | None = None
+    mouvement_code_acte: str | None = None
 
 
 class NumeroPartsWithDetailsPublic(SQLModel):

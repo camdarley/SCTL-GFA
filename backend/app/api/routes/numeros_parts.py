@@ -55,9 +55,21 @@ def read_numeros_parts(
         num_part_max=num_part_max,
         num_part=num_part,
     )
-    # Enrich with person and structure names
+    # Enrich with person, structure names and mouvement details
     parts_with_details = []
     for part in parts:
+        # Get mouvement details if available
+        mouvement = part.mouvement if part.id_mouvement else None
+        mouvement_date = None
+        mouvement_code_acte = None
+        if mouvement:
+            # Use date_operation if available, otherwise get from acte
+            mouvement_date = mouvement.date_operation
+            if not mouvement_date and mouvement.acte:
+                mouvement_date = mouvement.acte.date_acte
+            if mouvement.acte:
+                mouvement_code_acte = mouvement.acte.code_acte
+
         part_dict = NumeroPartWithDetails(
             id=part.id,
             num_part=part.num_part,
@@ -70,6 +82,9 @@ def read_numeros_parts(
             personne_nom=part.personne.nom if part.personne else None,
             personne_prenom=part.personne.prenom if part.personne else None,
             structure_nom=part.structure.nom_structure if part.structure else None,
+            mouvement_sens=mouvement.sens if mouvement else None,
+            mouvement_date=mouvement_date,
+            mouvement_code_acte=mouvement_code_acte,
         )
         parts_with_details.append(part_dict)
     return NumeroPartsWithDetailsPublic(data=parts_with_details, count=count)

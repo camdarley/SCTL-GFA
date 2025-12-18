@@ -1413,8 +1413,9 @@ export class LoginService {
 export class MouvementsService {
   /**
    * Read Mouvements
-   * Get all mouvements with optional filters.
+   * Get all mouvements with optional filters and enriched details.
    *
+   * Returns mouvements with personne_nom, personne_prenom, code_acte, date_acte.
    * - sens=true: acquisitions (+)
    * - sens=false: cessions (-)
    * @param data The data for the request.
@@ -1423,7 +1424,7 @@ export class MouvementsService {
    * @param data.idPersonne
    * @param data.idActe
    * @param data.sens
-   * @returns MouvementsPublic Successful Response
+   * @returns MouvementsWithDetailsPublic Successful Response
    * @throws ApiError
    */
   public static readMouvements(

@@ -16,11 +16,7 @@ import { useState } from "react"
 import { FiArrowDown, FiArrowUp, FiFilter } from "react-icons/fi"
 import { z } from "zod"
 
-import {
-  ActesService,
-  MouvementsService,
-  PersonnesService,
-} from "@/client"
+import { MouvementsService, PersonnesService, ActesService } from "@/client"
 import ActionnaireName from "@/components/Common/ActionnaireName"
 import ActeName from "@/components/Common/ActeName"
 import {
@@ -56,7 +52,7 @@ function HistoriquePage() {
   const [searchPersonne, setSearchPersonne] = useState("")
   const [searchActe, setSearchActe] = useState("")
 
-  // Fetch mouvements with filters
+  // Fetch mouvements with filters (backend now returns enriched data)
   const { data: mouvementsData, isLoading } = useQuery({
     queryKey: ["mouvements", { page, idPersonne, idActe, sens }],
     queryFn: () =>
@@ -67,18 +63,6 @@ function HistoriquePage() {
         idActe: idActe ?? undefined,
         sens: sens ?? undefined,
       }),
-  })
-
-  // Fetch personnes for enrichment
-  const { data: personnesData } = useQuery({
-    queryKey: ["personnes", "all"],
-    queryFn: () => PersonnesService.readPersonnes({ limit: 10000 }),
-  })
-
-  // Fetch actes for enrichment
-  const { data: actesData } = useQuery({
-    queryKey: ["actes", "all"],
-    queryFn: () => ActesService.readActes({ limit: 10000 }),
   })
 
   // Search results for filters
@@ -100,8 +84,6 @@ function HistoriquePage() {
 
   const mouvements = mouvementsData?.data ?? []
   const count = mouvementsData?.count ?? 0
-  const personnes = personnesData?.data ?? []
-  const actes = actesData?.data ?? []
   const searchPersonnes = searchPersonnesData?.data ?? []
   const searchActes = searchActesData?.data ?? []
 
@@ -114,25 +96,21 @@ function HistoriquePage() {
       )
     : searchActes
 
-  const getPersonneName = (idPersonne: number) => {
-    const p = personnes.find((p) => p.id === idPersonne)
-    return p ? `${p.nom} ${p.prenom || ""}`.trim() : `#${idPersonne}`
+  // Helper to get personne name from mouvements data or filter search
+  const getPersonneName = (personneId: number) => {
+    // Try to find in current mouvements
+    const mvt = mouvements.find((m) => m.id_personne === personneId)
+    if (mvt?.personne_nom) {
+      return `${mvt.personne_nom} ${mvt.personne_prenom || ""}`.trim()
+    }
+    return `#${personneId}`
   }
 
-  const getPersonneData = (idPersonne: number) => {
-    return personnes.find((p) => p.id === idPersonne)
-  }
-
-  const getActeCode = (idActe: number | null) => {
-    if (!idActe) return null
-    const a = actes.find((a) => a.id === idActe)
-    return a?.code_acte ?? `#${idActe}`
-  }
-
-  const getActeDate = (idActe: number | null) => {
-    if (!idActe) return null
-    const a = actes.find((a) => a.id === idActe)
-    return a?.date_acte ?? null
+  // Helper to get acte code from mouvements data
+  const getActeCode = (acteId: number | null) => {
+    if (!acteId) return null
+    const mvt = mouvements.find((m) => m.id_acte === acteId)
+    return mvt?.code_acte ?? `#${acteId}`
   }
 
   const setPage = (newPage: number) => {
@@ -363,9 +341,9 @@ function HistoriquePage() {
             <Table.Header>
               <Table.Row>
                 <Table.ColumnHeader w="120px">Date</Table.ColumnHeader>
-                <Table.ColumnHeader w="100px">Sens</Table.ColumnHeader>
+                <Table.ColumnHeader w="100px">Parts</Table.ColumnHeader>
                 <Table.ColumnHeader>Personne</Table.ColumnHeader>
-                <Table.ColumnHeader w="100px">Nb Parts</Table.ColumnHeader>
+                <Table.ColumnHeader>N° de parts</Table.ColumnHeader>
                 <Table.ColumnHeader>Acte</Table.ColumnHeader>
               </Table.Row>
             </Table.Header>
@@ -383,43 +361,47 @@ function HistoriquePage() {
                   <Table.Row key={mvt.id}>
                     <Table.Cell>
                       {(() => {
-                        const date = mvt.date_operation || getActeDate(mvt.id_acte)
+                        const date = mvt.date_operation || mvt.date_acte
                         return date
                           ? new Date(date).toLocaleDateString("fr-FR")
                           : "-"
                       })()}
                     </Table.Cell>
                     <Table.Cell>
-                      {mvt.sens ? (
-                        <Badge colorPalette="green">
-                          <FiArrowUp /> +
-                        </Badge>
+                      <Badge colorPalette={mvt.sens ? "green" : "red"} fontWeight="bold">
+                        {mvt.sens ? <FiArrowUp /> : <FiArrowDown />} {mvt.sens ? "+" : "-"}{mvt.nb_parts}
+                      </Badge>
+                    </Table.Cell>
+                    <Table.Cell>
+                      {mvt.personne_nom ? (
+                        <ActionnaireName
+                          personneId={mvt.id_personne}
+                          nom={mvt.personne_nom}
+                          prenom={mvt.personne_prenom}
+                        />
                       ) : (
-                        <Badge colorPalette="red">
-                          <FiArrowDown /> -
-                        </Badge>
+                        <Text>#{mvt.id_personne}</Text>
                       )}
                     </Table.Cell>
                     <Table.Cell>
-                      {(() => {
-                        const p = getPersonneData(mvt.id_personne)
-                        return p ? (
-                          <ActionnaireName
-                            personneId={p.id}
-                            nom={p.nom}
-                            prenom={p.prenom}
-                          />
-                        ) : (
-                          <Text>#{mvt.id_personne}</Text>
-                        )
-                      })()}
+                      {mvt.numeros_parts && mvt.numeros_parts.length > 0 ? (
+                        <Text fontSize="sm" color="gray.600" _dark={{ color: "gray.400" }}>
+                          {mvt.numeros_parts.join(", ")}
+                          {(mvt.numeros_parts_count ?? 0) > mvt.numeros_parts.length && (
+                            <Text as="span" color="gray.400" _dark={{ color: "gray.500" }}>
+                              {" "}+{(mvt.numeros_parts_count ?? 0) - mvt.numeros_parts.length} autres
+                            </Text>
+                          )}
+                        </Text>
+                      ) : (
+                        <Text fontSize="sm" color="gray.400">-</Text>
+                      )}
                     </Table.Cell>
-                    <Table.Cell fontWeight="bold">{mvt.nb_parts}</Table.Cell>
                     <Table.Cell>
                       {mvt.id_acte ? (
                         <ActeName
                           acteId={mvt.id_acte}
-                          codeActe={getActeCode(mvt.id_acte) || `#${mvt.id_acte}`}
+                          codeActe={mvt.code_acte || `#${mvt.id_acte}`}
                         />
                       ) : (
                         <Badge colorPalette="orange">Sans acte</Badge>
