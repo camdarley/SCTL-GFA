@@ -660,6 +660,7 @@ class ClassesCadastrePublic(SQLModel):
 class TypeFermageBase(SQLModel):
     """Type de fermage"""
     libelle: str = Field(max_length=100)
+    points: Decimal = Field(default=Decimal("0"), max_digits=10, decimal_places=4, description="Points de fermage par défaut pour ce type")
 
 
 class TypeFermageCreate(TypeFermageBase):
@@ -668,6 +669,7 @@ class TypeFermageCreate(TypeFermageBase):
 
 class TypeFermageUpdate(SQLModel):
     libelle: str | None = Field(default=None, max_length=100)
+    points: Decimal | None = Field(default=None, max_digits=10, decimal_places=4)
 
 
 class TypeFermage(TypeFermageBase, table=True):

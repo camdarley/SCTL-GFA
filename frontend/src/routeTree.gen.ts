@@ -17,12 +17,14 @@ import { Route as RecoverPasswordImport } from './routes/recover-password'
 import { Route as LoginImport } from './routes/login'
 import { Route as LayoutImport } from './routes/_layout'
 import { Route as LayoutIndexImport } from './routes/_layout/index'
+import { Route as LayoutValeursPointsImport } from './routes/_layout/valeurs-points'
 import { Route as LayoutStructuresImport } from './routes/_layout/structures'
 import { Route as LayoutSettingsImport } from './routes/_layout/settings'
 import { Route as LayoutPersonnesImport } from './routes/_layout/personnes'
 import { Route as LayoutPartsImport } from './routes/_layout/parts'
 import { Route as LayoutParcellesImport } from './routes/_layout/parcelles'
 import { Route as LayoutHistoriqueImport } from './routes/_layout/historique'
+import { Route as LayoutFermagesImport } from './routes/_layout/fermages'
 import { Route as LayoutCadastreImport } from './routes/_layout/cadastre'
 import { Route as LayoutAnomaliesImport } from './routes/_layout/anomalies'
 import { Route as LayoutAdminImport } from './routes/_layout/admin'
@@ -60,6 +62,11 @@ const LayoutIndexRoute = LayoutIndexImport.update({
   getParentRoute: () => LayoutRoute,
 } as any)
 
+const LayoutValeursPointsRoute = LayoutValeursPointsImport.update({
+  path: '/valeurs-points',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
 const LayoutStructuresRoute = LayoutStructuresImport.update({
   path: '/structures',
   getParentRoute: () => LayoutRoute,
@@ -87,6 +94,11 @@ const LayoutParcellesRoute = LayoutParcellesImport.update({
 
 const LayoutHistoriqueRoute = LayoutHistoriqueImport.update({
   path: '/historique',
+  getParentRoute: () => LayoutRoute,
+} as any)
+
+const LayoutFermagesRoute = LayoutFermagesImport.update({
+  path: '/fermages',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -150,6 +162,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutCadastreImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/fermages': {
+      preLoaderRoute: typeof LayoutFermagesImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/historique': {
       preLoaderRoute: typeof LayoutHistoriqueImport
       parentRoute: typeof LayoutImport
@@ -174,6 +190,10 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LayoutStructuresImport
       parentRoute: typeof LayoutImport
     }
+    '/_layout/valeurs-points': {
+      preLoaderRoute: typeof LayoutValeursPointsImport
+      parentRoute: typeof LayoutImport
+    }
     '/_layout/': {
       preLoaderRoute: typeof LayoutIndexImport
       parentRoute: typeof LayoutImport
@@ -189,12 +209,14 @@ export const routeTree = rootRoute.addChildren([
     LayoutAdminRoute,
     LayoutAnomaliesRoute,
     LayoutCadastreRoute,
+    LayoutFermagesRoute,
     LayoutHistoriqueRoute,
     LayoutParcellesRoute,
     LayoutPartsRoute,
     LayoutPersonnesRoute,
     LayoutSettingsRoute,
     LayoutStructuresRoute,
+    LayoutValeursPointsRoute,
     LayoutIndexRoute,
   ]),
   LoginRoute,

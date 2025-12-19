@@ -632,7 +632,11 @@ def migrate_classes_cadastre(conn, mdb_path: str):
 
 
 def migrate_types_fermage(conn, mdb_path: str):
-    """Migrate Fermage from Sctl-Gfa.mdb."""
+    """Migrate Fermage from Sctl-Gfa.mdb.
+
+    The Fermage table contains type codes and their default points for rent calculation.
+    Points are used when a subdivision doesn't have its own specific PointFermage value.
+    """
     print("  Migrating types_fermage...")
     csv_data = export_mdb_table_to_csv(mdb_path, "Fermage")
     columns, rows = parse_csv_data(csv_data)
@@ -645,14 +649,18 @@ def migrate_types_fermage(conn, mdb_path: str):
     for row in rows:
         type_fermage = row.get("TypeFermage", "").strip()
         libelle = row.get("Libelle", "").strip() or type_fermage or "?"
+        # Get the Points value for this fermage type (used for rent calculation)
+        points = convert_value(row.get("Points", ""), "decimal") or Decimal("0")
+
         values.append((
             convert_value(row.get("IdFermage", ""), "integer"),
             libelle,
+            points,
         ))
 
-    pg_columns = ["id", "libelle"]
+    pg_columns = ["id", "libelle", "points"]
     count = insert_batch(conn, "types_fermage", pg_columns, values)
-    print(f"    Inserted {count} types_fermage")
+    print(f"    Inserted {count} types_fermage (with points for rent calculation)")
 
 
 def migrate_parcelles(conn, mdb_path: str):

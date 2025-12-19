@@ -1418,6 +1418,26 @@ def delete_parcelle(*, session: Session, parcelle_id: int) -> bool:
 # FERMAGE CALCULATION (from UBib.pas - Bib_CalculerMontantFermage)
 # =============================================================================
 
+
+def get_effective_point_fermage(subdivision: Subdivision) -> Decimal:
+    """
+    Get effective point fermage for a subdivision.
+
+    Following the original Delphi logic from UNewParcelles.pas:
+    - If subdivision has a specific PointFermage > 0, use it
+    - Otherwise, use the Points from the TypeFermage
+    """
+    # Use subdivision-specific point if it exists and is > 0
+    if subdivision.point_fermage and subdivision.point_fermage > 0:
+        return subdivision.point_fermage
+
+    # Fall back to type fermage points
+    if subdivision.type_fermage and subdivision.type_fermage.points:
+        return subdivision.type_fermage.points
+
+    return Decimal("0")
+
+
 def calculer_montant_fermage(
     *,
     point_fermage: Decimal,
@@ -1523,8 +1543,12 @@ def get_fermage_totaux(
     valeur_point: ValeurPoint | None = None,
 ) -> FermageTotaux:
     """Get aggregated rent totals based on subdivisions with optional filtering"""
-    # Query subdivisions directly
-    statement = select(Subdivision).join(Parcelle, Subdivision.id_parcelle == Parcelle.id)
+    # Query subdivisions with type_fermage relationship loaded for point fallback
+    statement = (
+        select(Subdivision)
+        .join(Parcelle, Subdivision.id_parcelle == Parcelle.id)
+        .outerjoin(TypeFermage, Subdivision.id_type_fermage == TypeFermage.id)
+    )
 
     if id_exploitant is not None:
         statement = statement.where(Subdivision.id_exploitant == id_exploitant)
@@ -1546,10 +1570,12 @@ def get_fermage_totaux(
         parcelle_ids.add(sub.id_parcelle)
 
         if valeur_point:
+            # Get effective points: use subdivision's point_fermage if > 0, else type_fermage.points
+            effective_points = get_effective_point_fermage(sub)
             # Use the parcelle's sctl flag to determine GFA vs SCTL calculation
             est_sctl = sub.parcelle.sctl if sub.parcelle else False
             total_montant += calculer_montant_fermage(
-                point_fermage=sub.point_fermage,
+                point_fermage=effective_points,
                 surface=sub.surface,
                 est_sctl=est_sctl,
                 valeur_point_gfa=valeur_point.valeur_point_gfa,

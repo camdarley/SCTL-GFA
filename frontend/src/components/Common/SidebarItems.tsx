@@ -11,6 +11,8 @@ import {
   FiLayers,
   FiAlertTriangle,
   FiClock,
+  FiDollarSign,
+  FiSliders,
 } from "react-icons/fi"
 import type { IconType } from "react-icons/lib"
 
@@ -46,6 +48,8 @@ const gersaItems: Item[] = [
 const cadastreItems: Item[] = [
   { icon: FiMap, title: "Parcelles", path: "/parcelles" },
   { icon: FiMap, title: "Cadastre", path: "/cadastre" },
+  { icon: FiDollarSign, title: "Fermages", path: "/fermages" },
+  { icon: FiSliders, title: "Valeurs Points", path: "/valeurs-points" },
 ]
 
 const adminItems: Item[] = [

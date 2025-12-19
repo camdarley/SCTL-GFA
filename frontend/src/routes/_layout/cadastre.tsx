@@ -12,9 +12,10 @@ import {
 import { useQuery } from "@tanstack/react-query"
 import { createFileRoute } from "@tanstack/react-router"
 import { useState } from "react"
-import { FiPlus, FiSearch } from "react-icons/fi"
+import { FiPlus, FiSearch, FiEye, FiEdit2, FiTrash2 } from "react-icons/fi"
 
-import { CadastreService } from "@/client"
+import { CadastreService, type ExploitantPublic } from "@/client"
+import FicheExploitant from "@/components/Exploitants/FicheExploitant"
 
 export const Route = createFileRoute("/_layout/cadastre")({
   component: CadastrePage,
@@ -169,6 +170,8 @@ function LieuxDitsTab() {
 
 function ExploitantsTab() {
   const [searchTerm, setSearchTerm] = useState("")
+  const [selectedExploitant, setSelectedExploitant] = useState<ExploitantPublic | null>(null)
+  const [isFicheOpen, setIsFicheOpen] = useState(false)
 
   const { data, isLoading, isError } = useQuery({
     queryKey: ["exploitants"],
@@ -182,6 +185,16 @@ function ExploitantsTab() {
         e.prenom?.toLowerCase().includes(searchTerm.toLowerCase())
       )
     : exploitants
+
+  const handleViewExploitant = (exploitant: ExploitantPublic) => {
+    setSelectedExploitant(exploitant)
+    setIsFicheOpen(true)
+  }
+
+  const handleCloseFiche = () => {
+    setIsFicheOpen(false)
+    setSelectedExploitant(null)
+  }
 
   return (
     <Box>
@@ -234,13 +247,36 @@ function ExploitantsTab() {
                   <Table.Cell>{exploitant.ville || "-"}</Table.Cell>
                   <Table.Cell>{exploitant.tel || "-"}</Table.Cell>
                   <Table.Cell>
-                    <Button variant="ghost" size="sm">Modifier</Button>
+                    <Flex gap={1}>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={() => handleViewExploitant(exploitant)}
+                        title="Voir la fiche"
+                      >
+                        <FiEye />
+                      </Button>
+                      <Button variant="ghost" size="sm" title="Modifier">
+                        <FiEdit2 />
+                      </Button>
+                      <Button variant="ghost" size="sm" colorPalette="red" title="Supprimer">
+                        <FiTrash2 />
+                      </Button>
+                    </Flex>
                   </Table.Cell>
                 </Table.Row>
               ))
             )}
           </Table.Body>
         </Table.Root>
+      )}
+
+      {selectedExploitant && (
+        <FicheExploitant
+          exploitant={selectedExploitant}
+          isOpen={isFicheOpen}
+          onClose={handleCloseFiche}
+        />
       )}
     </Box>
   )
