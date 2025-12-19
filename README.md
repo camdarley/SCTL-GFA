@@ -160,6 +160,17 @@ VITE_API_URL=http://localhost:8000
 - [Déploiement](./deployment.md) - Instructions de déploiement
 - [Release Notes](./release-notes.md) - Historique des versions
 
+### Analyse des Systèmes Originaux
+
+Cette application modernise deux logiciels legacy distincts, développés respectivement en C++ Builder et Delphi :
+
+| Système Original | Documentation | Description |
+|------------------|---------------|-------------|
+| **Logiciel Parts** (Sctl/) | [LOGICIEL_PARTS.md](./docs/LOGICIEL_PARTS.md) | Gestion des actionnaires et parts sociales - Application C++ Builder |
+| **Logiciel Terre** (D3Dev/Ghis/) | [LOGICIEL_TERRE.md](./docs/LOGICIEL_TERRE.md) | Gestion du cadastre et des fermages - Application Delphi |
+
+Ces documents décrivent en détail les modèles de données, la logique métier et les interfaces des systèmes originaux, servant de référence pour la migration.
+
 ## Migration depuis les anciens systèmes
 
 L'application inclut des scripts de migration pour importer les données depuis les bases Access originales :
